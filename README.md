@@ -1,8 +1,8 @@
 Investment Tracker is a web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, all the updates will be and you will be redirected to the updated Airtable base.
 
-![Investment Tracker Base](/Users/fabioberger/Desktop/Screen Shot 2016-06-05 at 00.21.45.png)
+![Investment Tracker Base](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
 
-See the [live base template here.](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
+See the [live base template here.](https://airtable.com/shrA09QDhlYHBPMB3)
 
 ## Set up
 
