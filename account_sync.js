@@ -6,6 +6,7 @@ const config = require('./config');
 const kraken = require('./kraken');
 const coinbase = require('./coinbase');
 const Currencies = require('./currencies');
+const Holdings = require('./holdings');
 const openExchangeRates = require('./open_exchange_rates');
 
 const plaidClient = new plaid.Client(config.plaidCredentials.clientId, config.plaidCredentials.secret, plaid.environments.tartan);
@@ -56,13 +57,13 @@ const accountSync = {
         const lastTradePrice = await coinbase.fetchBitcoinPriceInDollarsAsync();
         await this.updateCurrencyPriceAsync(Currencies.bitcoin, lastTradePrice);
     },
-    async fetchAndUpdateChaseBankBalanceAsync() {
+    async fetchAndUpdateBankBalanceAsync() {
         const response = await promisify(plaidClient.getBalance.bind(plaidClient))(config.plaidCredentials.accessToken);
         let currentBalance = 0;
         _.each(response.accounts, account => {
             currentBalance += account.balance.available;
         });
-        await this.updateHoldingAmountAsync('Chase Bank', currentBalance);
+        await this.updateHoldingAmountAsync(Holdings.chaseBank, currentBalance);
     },
 };
 

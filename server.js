@@ -24,7 +24,7 @@ app.get('/:airtableId', deAsync(async function(req, res) {
         await accountSync.fetchAndUpdateKrakenCurrencyPriceAsync(Currencies.ether);
         await accountSync.fetchAndUpdateFiatExchangeRateAsync(Currencies.swissFranks);
         await accountSync.fetchAndUpdateCoinbaseBitcoinPriceAsync();
-        await accountSync.fetchAndUpdateChaseBankBalanceAsync();
+        await accountSync.fetchAndUpdateBankBalanceAsync();
     } catch (err) {
         console.log('Error Encountered:', err);
         res.status(400).send('An Error Occurred');

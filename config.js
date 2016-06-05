@@ -1,4 +1,5 @@
 const Currencies = require('./currencies');
+const Holdings = require('./holdings');
 
 const config = {
     airtableCredentials: {
@@ -11,7 +12,7 @@ const config = {
         [Currencies.swissFranks]: 'recMiv9jX8PIfLEmw',
     },
     holdingToRecordId: {
-        'Chase Bank': 'recDhlsWyFupq66uy',
+        [Holdings.chaseBank]: 'recDhlsWyFupq66uy',
     },
     openExchangeCredentials: {
         apiKey: process.env.OPEN_EXCHANGE_API_KEY,
