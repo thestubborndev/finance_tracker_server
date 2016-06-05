@@ -14,11 +14,11 @@ Since this app speaks with multiple third-party services in order to update exch
 
 You will need to [sign up](https://airtable.com/) for an Airtable account. Once you have an account:
 
-1. [Install the Investment Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button in the top right corner. 
+1. [Install the Investment Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button in the top right corner.
 
 2. Visit the [Airtable API page](https://airtable.com/api), select the Investment Tracker base from the list to see it's custom documentation.
 
-3. If you check the "show API key" box in the top right, your API key will be within the code examples (e.g `keyYfG4QKO1heNMNv`). Copy and paste it into the config file to replace `process.env.AIRTABLE_API_KEY` or set it as an environment variable on your computer. 
+3. If you check the "show API key" box in the top right, your API key will be within the code examples (e.g `keyYfG4QKO1heNMNv`). Copy and paste it into the config file to replace `process.env.AIRTABLE_API_KEY` or set it as an environment variable on your computer.
 
 4. Next, copy/paste the appId corresponding to the `Invetment Tracker` base from the example request URL (it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
 
@@ -40,7 +40,7 @@ This will remove the updating of the CHF/USD exchange rate. Alternatively you co
 
 In order to pull your bank balance into your Investment Tracker, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connected to many banks with your online banking credentials and once authenticated, you can request your current bank balance. At the time of writing, this was free for up to 100 connected accounts.
 
-1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId`, and `secret` in the `config.js` file. 
+1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId`, and `secret` in the `config.js` file.
 
 2. Next, we need to retrieve an `accessToken` associated with your online banking login credentials. To make this as painless a process as possible, I wrote a small script that should help you get this in a matter of seconds. Open the `plaid_access_token_fetcher.js` file thats inside the `setup` folder. Fill in your online banking username and password credentials, choose your banking institition and run this script with the following command:
 
