@@ -2,7 +2,7 @@ Investment Tracker is a web server that updates crypto/fiat currency exchanges a
 
 ![Investment Tracker Base](/Users/fabioberger/Desktop/Screen Shot 2016-06-05 at 00.21.45.png)
 
-See the [live base template here.](https://airtable.com/shrA09QDhlYHBPMB3)
+See the [live base template here.](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
 
 ## Set up
 
