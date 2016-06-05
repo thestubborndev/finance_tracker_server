@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const requester = require('./requester');
 const config = require('./config');
 const Currencies = require('./currencies');
 
@@ -17,17 +17,10 @@ const openExchangeRates = {
                 the top of open_exchange_rates.js
             `);
         }
-        const response = await fetch(`https://openexchangerates.org/api/latest.json?app_id=${config.openExchangeCredentials.apiKey}`);
-        if (!response.ok) {
-            const err = new Error(`Non-200 Response Received: ${response.status}`, response);
-            err.response = response;
-            throw err;
-        } else {
-            const bodyObj = await response.json();
-            const lastTradePrice = parseFloat(bodyObj.rates[currencySymbol]);
-            const currencyValueInDollars = 1 / lastTradePrice;
-            return currencyValueInDollars;
-        }
+        const response = await requester(`https://openexchangerates.org/api/latest.json?app_id=${config.openExchangeCredentials.apiKey}`);
+        const lastTradePrice = parseFloat(response.rates[currencySymbol]);
+        const currencyValueInDollars = 1 / lastTradePrice;
+        return currencyValueInDollars;
     },
 };
 

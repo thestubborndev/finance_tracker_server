@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const requester = require('./requester');
 const Currencies = require('./currencies');
 
 const currencyToKrakenPairName = {
@@ -9,15 +9,8 @@ const currencyToKrakenPairName = {
 const kraken = {
     async fetchCurrencyPriceAsync(currencyName, done) {
         const currencyPair = currencyToKrakenPairName[currencyName];
-        const response = await fetch(`https://api.kraken.com/0/public/Ticker?pair=${currencyPair}`);
-        if (!response.ok) {
-            const err = new Error(`Non-200 Response Received: ${response.status}`, response);
-            err.response = response;
-            throw err;
-        } else {
-            const bodyObj = await response.json();
-            return parseFloat(bodyObj.result[currencyPair].c[0]);
-        }
+        const response = await requester(`https://api.kraken.com/0/public/Ticker?pair=${currencyPair}`);
+        return parseFloat(response.result[currencyPair].c[0]);
     },
 };
 
