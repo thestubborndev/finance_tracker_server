@@ -1,4 +1,4 @@
-Investment Tracker is a web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, all the updates will be and you will be redirected to the updated Airtable base.
+Investment Tracker is a web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, all the updates will be made and you will be redirected to the updated Airtable base.
 
 ![Investment Tracker Base](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
 
@@ -24,25 +24,25 @@ You will need to [sign up](https://airtable.com/) for an Airtable account. Once 
 
 3. If you check the "show API key" box in the top right, your API key will be within the code examples (e.g `keyYfG4QKO1heNMNv`). Copy and paste it into the config file to replace `process.env.AIRTABLE_API_KEY` or set it as an environment variable on your computer.
 
-4. Next, copy/paste the appId corresponding to the `Invetment Tracker` base from the example request URL (it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
+4. Next, copy/paste the appId corresponding to the `Investment Tracker` base from the example request URL (it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
 
 5. Every piece of information we will want to update on Airtable has an associated `recordId`. Find the recordIds for `Ether`, `Bitcoin`, `CHF` in the `Currencies` table and for `Chase Bank` in the `Holdings` table and update the recordIds in the `currencyToRecordId` and `holdingToRecordId` objects at the top of the config file.
 
-And thats it for Airtable!
+And that's it for Airtable!
 
 #### Open Exchange Rates
 
-If you are interested in updating the USD value of bank accounts denominated in order fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key to set in the config file. If you don't care for other fiat currenies, you can simply comment-out/remove the following line from the `server.js` file:
+If you are interested in updating the USD value of bank accounts denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key to set in the config file. If you don't care for other fiat currencies, you can simply comment-out/remove the following line from the `server.js` file:
 
 ```
 await accountSync.fetchAndUpdateFiatExchangeRateAsync(Currencies.swissFranks);
 ```
 
-This will remove the updating of the CHF/USD exchange rate. Alternatively you could pass in a different fiat you care to track into this function.
+This will remove the updating of the CHF/USD exchange rate. Alternatively you could pass in a different fiat into this function that you care to track.
 
 #### Plaid Bank Integration
 
-In order to pull your bank balance into your Investment Tracker, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connected to many banks with your online banking credentials and once authenticated, you can request your current bank balance. At the time of writing, this was free for up to 100 connected accounts.
+In order to pull a bank balance into your Investment Tracker, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connecting to many banks with your online banking credentials and once authenticated, you can request your current bank balance. At the time of writing, this was free for up to 100 connected accounts.
 
 1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId`, and `secret` in the `config.js` file.
 
@@ -58,7 +58,7 @@ And you're done integrating with Plaid!
 
 ### Starting the server
 
-By now, you should have hooked up all the external accounts to the program. All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to start a transpiler in one terminal and the server in another. To start the transpiler, open the project folder in a terminal window and run:
+By now, you should have hooked up all the external accounts! All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to start a transpiler in one terminal window and the server in another. To start the transpiler, open the project folder in terminal and run:
 
 ```
 babel . --out-dir ./transpiled --watch --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'
@@ -73,7 +73,7 @@ node transpiled/server.js
 If everything worked, you should see the message:
 
 ```
-Server Running... If running locally, visit: http://localhost:3000/YOUR_AIRTABLE_TABLE_ID
+Server Running... If running locally, visit: localhost:3000/appCeLwipDDNrFMm2
 ```
 
 And just like it says, copy/paste the URL into a browser and that should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Investment Tracker base!
