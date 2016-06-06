@@ -1,18 +1,9 @@
 const Currencies = require('./currencies');
-const Holdings = require('./holdings');
 
 const config = {
     airtableCredentials: {
         apiKey: process.env.AIRTABLE_API_KEY,
         appId: 'appy7d4XIf7m0TDgM',
-    },
-    currencyToRecordId: {
-        [Currencies.ether]: 'recDqOyG5rOGmbSgx',
-        [Currencies.bitcoin]: 'recg2UNdVtKRpA9AH',
-        [Currencies.swissFranks]: 'recMiv9jX8PIfLEmw',
-    },
-    holdingToRecordId: {
-        [Holdings.chaseBank]: 'recDhlsWyFupq66uy',
     },
     openExchangeCredentials: {
         apiKey: process.env.OPEN_EXCHANGE_API_KEY,
@@ -22,6 +13,12 @@ const config = {
         secret: process.env.PLAID_SECRET,
         accessToken: process.env.PLAID_ACCESS_TOKEN,
     },
+    // Add to this list the crypto-assets you wish to update
+    // All possible assets listed in: crypto_assets.js
+    cryptoAssetsToUpdate: [Currencies.ethereum, Currencies.bitcoin],
+    // Add to this list the fiat currencies you wish to update
+    // All possible Fiat Currencies listed in: fiat_currencies.js
+    fiatCurrenciesToUpdate: [Currencies.CHF],
 };
 
 module.exports = config;
