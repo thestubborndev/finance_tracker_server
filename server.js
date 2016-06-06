@@ -23,7 +23,10 @@ app.get('/:airtableId', deAsync(async function(req, res) {
     try {
         await accountSync.fetchAndUpdateCryptoAssetsAsync();
         await accountSync.fetchAndUpdateFiatCurrenciesAsync();
-        await accountSync.fetchAndUpdateBankBalanceAsync();
+        // If an accessToken is not specified in the config file,
+        if (process.env.PLAID_ACCESS_TOKEN) {
+            await accountSync.fetchAndUpdateBankBalanceAsync();
+        }
     } catch (err) {
         console.log('Error Encountered:', err);
         res.status(400).send('An Error Occurred');
