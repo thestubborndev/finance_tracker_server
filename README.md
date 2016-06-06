@@ -6,13 +6,15 @@ See the [live base template here.](https://airtable.com/shrA09QDhlYHBPMB3)
 
 ## Set up
 
-In order to run this app locally, you will need [Nodejs](https://nodejs.org/en/download/).
+In order to run this app locally, you will need to [install nodejs](https://nodejs.org/en/download/).
 
 After cloning this repository, run `npm install` from the projects directory to install it's dependencies.
 
+The remaining setup steps will require you to edit a single file: `config.js`. Open it now in your favorite text editor and follow the remaining instructions.
+
 ### Choose currencies to update
 
-By default, the server will update the exchange rates of `Ether`, `Bitcoin` and `CHF`. You can easily customize the currencies you want updated by adding/removing them from the `config.js` file. 
+By default, the server will update the exchange rates for `Ether`, `Bitcoin` and `CHF`, however, You can easily customize the currencies you want updated. 
 
 #### Crypto Assets
 
@@ -29,7 +31,7 @@ cryptoAssetsToUpdate: [
 
 #### Fiat Currencies
 
-Customize the fiat currencies updated by modifying the `fiatCurrenciesToUpdate` list
+Customize the fiat currencies updated by modifying the `fiatCurrenciesToUpdate` list.
 
 ```
 fiatCurrenciesToUpdate: [
@@ -42,7 +44,7 @@ fiatCurrenciesToUpdate: [
 
 ### External accounts
 
-Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and the Airtable base, you will need to update some API credentials conveniently located in the `config.js` file. Open it up in your favorite text editor and lets go through each one step by step.
+Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and the Airtable base, you will need to update some API credentials conveniently located in the `config.js` file. Lets go through them step-by-step.
 
 #### Airtable
 
@@ -54,7 +56,7 @@ You will need to [sign up](https://airtable.com/) for an Airtable account. Once 
 
 3. If you check the "show API key" box in the top right, your API key will be within the code examples (e.g `keyYfG4QKO1heNMNv`). Copy and paste it into the config file to replace `process.env.AIRTABLE_API_KEY` or set it as an environment variable on your computer.
 
-4. Next, copy/paste the appId corresponding to the `Investment Tracker` base from the example request URL (it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
+4. Next, copy/paste the appId corresponding to the `Investment Tracker` base from the example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
 
 Config.js File Location:
 
@@ -69,7 +71,9 @@ And that's it for Airtable!
 
 #### Open Exchange Rates (Optional)
 
-If you are interested in updating the USD value of bank accounts denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Set in the config file or set it as an environment variable.
+If you are interested in updating the USD value of holdings denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Set in the config file or set it as an environment variable.
+
+Config.js File Location:
 
 ```
 openExchangeCredentials: {
@@ -93,17 +97,27 @@ babel . --out-dir ./transpiled --ignore '**node_modules,.git,transpiled' -x '.es
 
 This will print your `accessToken` into the terminal from where you can copy/paste it into the `config.js` file.
 
+Config.js File Location:
+
+```
+plaidCredentials: {
+    clientId: process.env.PLAID_CLIENT_ID,
+    secret: process.env.PLAID_SECRET,
+    accessToken: process.env.PLAID_ACCESS_TOKEN,
+},
+```
+
 If you don't want to activate balance updates, simply don't add the `accessToken` to `config.js` and balance updates will be skipped.
 
 ## Starting the server
 
-By now, you should have hooked up all the external accounts you want! All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to start a transpiler in one terminal window and the server in another. To start the transpiler, open the project folder in terminal and run:
+By now, you should have hooked up all the external accounts you want! All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to transpile the project before starting the server. To transpile the project, run the following from the project directory:
 
 ```
-babel . --out-dir ./transpiled --watch --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'
+babel . --out-dir ./transpiled --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'
 ```
 
-Then, in another terminal window, run:
+Now run:
 
 ```
 node transpiled/server.js
@@ -120,3 +134,19 @@ Visiting the link in a browser should kick off the crypto/fiat currency and bank
 I hope this was helpful! Happy tracking and investing! :)
 
 PS: If I were deploying this to a server somewhere, I would use an error tracking service like [Rollbar](https://rollbar.com/) to notify me of errors so that I could fix things if anything broke or stopped working!
+
+## Developing
+
+If you want to make more extensive changes to the code, feel free to do so! If it does something awesome, submit a pull request!
+
+When developing, it's more convenient to have "transpile on write" set up. To do this, run the following command from a terminal window:
+
+```
+babel . --out-dir ./transpiled --watch --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'
+```
+
+And run the server from another terminal window:
+
+```
+node transpiled/server.js
+```
