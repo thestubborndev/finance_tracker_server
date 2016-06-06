@@ -24,12 +24,12 @@ plaidClient.addAuthUser(INSTITUTION, {
 }, function(err, mfaResponse, response) {
     if (err) {
         // Bad request - invalid credentials, account locked, etc.
-        throw err;
+        console.error(err);
     } else if (mfaResponse) {
-        throw new Error(`
+        console.error(new Error(`
             Looks like MFA is enabled for your account.
             See the comment above.
-        `);
+        `));
     } else {
         // No MFA required - response body has accounts
         console.log(`Your Access Token is: ${response.access_token}. Copy this value into the config.js file.`);
