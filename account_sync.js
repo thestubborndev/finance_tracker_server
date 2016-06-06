@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const plaid = require('plaid');
-const Airtable = require('airtable');
 const promisify = require('es6-promisify');
 const config = require('./config');
 const kraken = require('./kraken');
@@ -10,17 +9,8 @@ const Holdings = require('./holdings');
 const openExchangeRates = require('./open_exchange_rates');
 
 const plaidClient = new plaid.Client(config.plaidCredentials.clientId, config.plaidCredentials.secret, plaid.environments.tartan);
-const base = new Airtable({apiKey: config.airtableCredentials.apiKey}).base(config.airtableCredentials.appId);
 
 const accountSync = {
-    async updateAirtableAsync(tableName, recordId, fieldName, fieldValue) {
-        return promisify(this.updateAirtable.bind(this))(tableName, fieldName, recordId, fieldValue);
-    },
-    updateAirtable(tableName, recordId, fieldName, fieldValue, done) {
-        base(tableName).update(recordId, {
-            [fieldName]: fieldValue,
-        }, done);
-    },
     async updateCurrencyPriceAsync(currencyName, priceInDollars, done) {
         const currencyRecordId = config.currencyToRecordId[currencyName];
         if (!currencyRecordId) {
