@@ -28,8 +28,8 @@ app.get('/:airtableId', deAsync(async function(req, res) {
         }
         // If an accessToken is not specified in the config file, do not attempt
         // to update the account balance
-        if (config.plaidCredentials.accessToken) {
-            await accountSync.fetchAndUpdateBankBalanceAsync();
+        if (_.size(config.plaidCredentials.airtableHoldingNameToAccessToken)) {
+            await accountSync.fetchAndUpdateBankBalancesAsync();
         }
     } catch (err) {
         console.log('Error Encountered:', err);
@@ -41,5 +41,5 @@ app.get('/:airtableId', deAsync(async function(req, res) {
 
 const port = process.env.INVESTMENT_TRACKER_PORT || 80;
 app.listen(port, () => {
-    console.log(`Server Running... If running locally, visit: localhost:${port}/${config.airtableCredentials.appId}`);
+    console.log(`Server Running... If running locally, visit: http://localhost:${port}/${config.airtableCredentials.appId}`);
 });
