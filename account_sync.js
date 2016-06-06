@@ -2,8 +2,6 @@ const _ = require('lodash');
 const plaid = require('plaid');
 const promisify = require('es6-promisify');
 const config = require('./config');
-const kraken = require('./kraken');
-const coinbase = require('./coinbase');
 const Currencies = require('./currencies');
 const Holdings = require('./holdings');
 const openExchangeRates = require('./open_exchange_rates');
@@ -35,17 +33,10 @@ const accountSync = {
         }
         await this.updateAirtableAsync('Holdings', 'Amount', holdingRecordId, amountInDollars);
     },
-    async fetchAndUpdateKrakenCurrencyPriceAsync(currencyName) {
-        const priceInDollars = await kraken.fetchCurrencyPriceAsync(currencyName);
-        await this.updateCurrencyPriceAsync(currencyName, priceInDollars);
-    },
     async fetchAndUpdateFiatExchangeRateAsync(fiatCurrencyName) {
         const priceInDollars = await openExchangeRates.fetchCurrencyExchangeInDollarsAsync(fiatCurrencyName);
         await this.updateCurrencyPriceAsync(fiatCurrencyName, priceInDollars);
     },
-    async fetchAndUpdateCoinbaseBitcoinPriceAsync() {
-        const lastTradePrice = await coinbase.fetchBitcoinPriceInDollarsAsync();
-        await this.updateCurrencyPriceAsync(Currencies.bitcoin, lastTradePrice);
     },
     async fetchAndUpdateBankBalanceAsync() {
         const response = await promisify(plaidClient.getBalance.bind(plaidClient))(config.plaidCredentials.accessToken);
