@@ -39,7 +39,7 @@ app.get('/:airtableId', deAsync(async function(req, res) {
     res.redirect(`https://airtable.com/${airtableId}`);
 }));
 
-const port = process.env.INVESTMENT_TRACKER_PORT || 80;
+const port = process.env.FINANCE_TRACKER_PORT || 80;
 app.listen(port, () => {
     console.log(`Server Running... If running locally, visit: http://localhost:${port}/${config.airtableCredentials.appId}`);
 });

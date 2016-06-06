@@ -1,6 +1,6 @@
-Investment Tracker is a web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, all the updates will be made and you will be redirected to the updated Airtable base.
+Finance Tracker is a web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, all the updates will be made and you will be redirected to the updated Airtable base.
 
-![Investment Tracker Base](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
+![Finance Tracker Base](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
 
 See the [live base template here.](https://airtable.com/shrA09QDhlYHBPMB3)
 
@@ -14,7 +14,7 @@ The remaining setup steps will require you to edit a single file: `config.js`. O
 
 ### Choose currencies to update
 
-By default, the server will update the exchange rates for `Ether`, `Bitcoin` and `CHF`, however, You can easily customize the currencies you want updated. 
+By default, the server will update the exchange rates for `Ether`, `Bitcoin` and `CHF`, however, You can easily customize the currencies you want updated.
 
 #### Crypto Assets
 
@@ -50,13 +50,13 @@ Since this app integrates with multiple third-party services in order to update 
 
 You will need to [sign up](https://airtable.com/) for an Airtable account. Once you have an account:
 
-1. [Install the Investment Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button in the top right corner.
+1. [Install the Finance Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button in the top right corner.
 
-2. Visit the [Airtable API page](https://airtable.com/api), select the Investment Tracker base from the list to see it's custom documentation.
+2. Visit the [Airtable API page](https://airtable.com/api), select the Finance Tracker base from the list to see it's custom documentation.
 
 3. If you check the "show API key" box in the top right, your API key will be within the code examples (e.g `keyYfG4QKO1heNMNv`). Copy and paste it into the config file to replace `process.env.AIRTABLE_API_KEY` or set it as an environment variable on your computer.
 
-4. Next, copy/paste the appId corresponding to the `Investment Tracker` base from the example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
+4. Next, copy/paste the appId corresponding to the `Finance Tracker` base from the example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
 
 Config.js File Location:
 
@@ -110,7 +110,7 @@ plaidCredentials: {
     },
 },
 ```
-So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it. We should also make sure that we have a record in the 'Assets' table in our **Investment Tracker** base on Airtable.com with the name: 'Chase Bank Balance'. This was, the server knows which record to update in Airtable with the account balance.
+So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it. We should also make sure that we have a record in the 'Assets' table in our **Finance Tracker** base on Airtable.com with the name: 'Chase Bank Balance'. This was, the server knows which record to update in Airtable with the account balance.
 
 
 **Note:** If you don't want to activate balance updates, simply remove all entries from `airtableAssetNameToAccessToken` and balance updates will be skipped.
@@ -139,7 +139,7 @@ If everything worked, you should see the message:
 Server Running... If running locally, visit: localhost:3000/appCeLwipDDNrFMm2
 ```
 
-Visiting the link in a browser should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Investment Tracker base!
+Visiting the link in a browser should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Finance Tracker base!
 
 I hope this was helpful! Happy tracking and investing! :)
 
