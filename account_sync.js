@@ -1,7 +1,8 @@
 const _ = require('lodash');
-const plaid = require('plaid');
 const promisify = require('es6-promisify');
+const plaid = require('plaid');
 const config = require('./config');
+const airtable = require('./airtable');
 const coinMarketCap = require('./coin_market_cap');
 const Currencies = require('./currencies');
 const Holdings = require('./holdings');
@@ -25,24 +26,26 @@ const accountSync = {
                 await this.updateCurrencyPriceAsync(currencyName, priceInDollars);
             }
         }
-        await this.updateAirtableAsync('Currencies', 'Price', currencyRecordId, priceInDollars);
     },
-    async updateHoldingAmountAsync(holdingName, amountInDollars, done) {
-        const holdingRecordId = config.holdingToRecordId[holdingName];
-        if (!holdingRecordId) {
-            throw new Error(`
-                Encountered an unknown holdingName: ${holdingName} in updateHoldingAmountAsync.
-                If you have added a new holdingName, make sure you also added a corresponding
-                holdingToRecordId entry mapping the holdingName to the Airtable recordId
-                where it's balance is stored.
-            `);
+    async fetchAndUpdateFiatCurrenciesAsync(fiatCurrencyName) {
+        const fiatCurrencyExchangeRates = await openExchangeRates.fetchAllCurrencyExchangesInDollarsAsync(fiatCurrencyName);
+        for (var currencyName in fiatCurrencyExchangeRates) {
+            if (!fiatCurrencyExchangeRates.hasOwnProperty(currencyName)) {
+                continue;
+            }
+            if (_.indexOf(config.fiatCurrenciesToUpdate, currencyName) !== -1) {
+                const priceInDollars = 1 / fiatCurrencyExchangeRates[currencyName];
+                await this.updateCurrencyPriceAsync(currencyName, priceInDollars);
+            }
         }
-        await this.updateAirtableAsync('Holdings', 'Amount', holdingRecordId, amountInDollars);
     },
-    async fetchAndUpdateFiatExchangeRateAsync(fiatCurrencyName) {
-        const priceInDollars = await openExchangeRates.fetchCurrencyExchangeInDollarsAsync(fiatCurrencyName);
-        await this.updateCurrencyPriceAsync(fiatCurrencyName, priceInDollars);
+    async updateCurrencyPriceAsync(currencyName, priceInDollars) {
+        const currencyRecordId = await airtable.fetchRecordIdForCurrencyAsync(currencyName);
+        await airtable.updateAsync('Currencies', 'Price', currencyRecordId, priceInDollars);
     },
+    async updateHoldingAmountAsync(holdingName, amountInDollars) {
+        const holdingRecordId = await airtable.fetchRecordIdForHoldingAsync(holdingName);
+        await airtable.updateAsync('Holdings', 'Amount', holdingRecordId, amountInDollars);
     },
     async fetchAndUpdateBankBalanceAsync() {
         const response = await promisify(plaidClient.getBalance.bind(plaidClient))(config.plaidCredentials.accessToken);

@@ -21,8 +21,8 @@ app.get('/:airtableId', deAsync(async function(req, res) {
     }
 
     try {
-        await accountSync.fetchAndUpdateFiatExchangeRateAsync(Currencies.swissFranks);
         await accountSync.fetchAndUpdateCryptoAssetsAsync();
+        await accountSync.fetchAndUpdateFiatCurrenciesAsync();
         await accountSync.fetchAndUpdateBankBalanceAsync();
     } catch (err) {
         console.log('Error Encountered:', err);
