@@ -1,10 +1,7 @@
 const _ = require('lodash');
+const FiatCurrencies = require('./fiat_currencies');
+const CrytoAssets = require('./crypto_assets');
 
-// Currencies maps the currency enum value to it's fieldName within Airtable
-const Currencies = {
-    ether: 'ether',
-    bitcoin: 'bitcoin',
-    swissFranks: 'swiss franks',
-};
+const Currencies = _.extend({}, CrytoAssets, FiatCurrencies);
 
 module.exports = Currencies;
