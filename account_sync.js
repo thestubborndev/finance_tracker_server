@@ -12,6 +12,10 @@ const plaidClient = new plaid.Client(config.plaidCredentials.clientId, config.pl
 
 const accountSync = {
     async fetchAndUpdateCryptoAssetsAsync() {
+        if (config.cryptoAssetsToUpdate.length === 0) {
+            return; // short-circuit if no crypto asset updates wanted
+        }
+
         const cryptoAssetList = await coinMarketCap.fetchCryptoAssetsAsync();
         for (const cryptoAsset of cryptoAssetList) {
             if (_.indexOf(config.cryptoAssetsToUpdate, cryptoAsset.id) !== -1) {
@@ -28,6 +32,10 @@ const accountSync = {
         }
     },
     async fetchAndUpdateFiatCurrenciesAsync(fiatCurrencyName) {
+        if (config.fiatCurrenciesToUpdate.length === 0) {
+            return; // short-circuit if no fiat currency updates wanted
+        }
+
         const fiatCurrencyExchangeRates = await openExchangeRates.fetchAllCurrencyExchangesInDollarsAsync(fiatCurrencyName);
         for (var currencyName in fiatCurrencyExchangeRates) {
             if (!fiatCurrencyExchangeRates.hasOwnProperty(currencyName)) {
