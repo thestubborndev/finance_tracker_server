@@ -2,6 +2,7 @@ const _ = require('lodash');
 const plaid = require('plaid');
 const promisify = require('es6-promisify');
 const config = require('./config');
+const coinMarketCap = require('./coin_market_cap');
 const Currencies = require('./currencies');
 const Holdings = require('./holdings');
 const openExchangeRates = require('./open_exchange_rates');
@@ -9,15 +10,20 @@ const openExchangeRates = require('./open_exchange_rates');
 const plaidClient = new plaid.Client(config.plaidCredentials.clientId, config.plaidCredentials.secret, plaid.environments.tartan);
 
 const accountSync = {
-    async updateCurrencyPriceAsync(currencyName, priceInDollars, done) {
-        const currencyRecordId = config.currencyToRecordId[currencyName];
-        if (!currencyRecordId) {
-            throw new Error(`
-                Encountered an unknown currency: ${currencyName} in updateCurrencyPriceAsync.
-                If you have added a new currency, make sure you also added a corresponding
-                currencyToRecordId entry mapping the currency to the Airtable recordId
-                where it's exchange value is stored.
-            `);
+    async fetchAndUpdateCryptoAssetsAsync() {
+        const cryptoAssetList = await coinMarketCap.fetchCryptoAssetsAsync();
+        for (const cryptoAsset of cryptoAssetList) {
+            if (_.indexOf(config.cryptoAssetsToUpdate, cryptoAsset.id) !== -1) {
+                const priceInDollars = cryptoAsset.price_usd;
+                const currencyName = Currencies[cryptoAsset.id];
+                if (!currencyName) {
+                    throw new Error(`
+                        ${cryptoAsset.id} is missing from the 'Currencies' enum. Add
+                        it to the enum in order to resolve this error.
+                    `);
+                }
+                await this.updateCurrencyPriceAsync(currencyName, priceInDollars);
+            }
         }
         await this.updateAirtableAsync('Currencies', 'Price', currencyRecordId, priceInDollars);
     },

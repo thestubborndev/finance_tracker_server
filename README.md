@@ -35,7 +35,7 @@ And that's it for Airtable!
 If you are interested in updating the USD value of bank accounts denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key to set in the config file. If you don't care for other fiat currencies, you can simply comment-out/remove the following line from the `server.js` file:
 
 ```
-await accountSync.fetchAndUpdateFiatExchangeRateAsync(Currencies.swissFranks);
+await accountSync.fetchAndUpdateFiatCurrenciesAsync(Currencies.CHF);
 ```
 
 This will remove the updating of the CHF/USD exchange rate. Alternatively you could pass in a different fiat into this function that you care to track.
