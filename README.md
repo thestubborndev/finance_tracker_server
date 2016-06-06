@@ -71,7 +71,7 @@ And that's it for Airtable!
 
 #### Open Exchange Rates (Optional)
 
-If you are interested in updating the USD value of holdings denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Set in the config file or set it as an environment variable.
+If you are interested in updating the USD value of assets denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Set in the config file or set it as an environment variable.
 
 Config.js File Location:
 
@@ -85,7 +85,7 @@ If you don't care to update other fiat currency exchanges, don't add an API key 
 
 #### Plaid Bank Integration (Optional)
 
-If you would like to update an entry in the 'Holdings' table with your current bank balance, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connecting to many US banks with online banking credentials and once authenticated, you can request your current bank balance easily. At the time of writing, this was free for up to 100 connected accounts.
+If you would like to update an entry in the 'Assets' table with your current bank balance, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connecting to many US banks with online banking credentials and once authenticated, you can request your current bank balance easily. At the time of writing, this was free for up to 100 connected accounts.
 
 1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId` and `secret` in the `config.js` file.
 
@@ -95,7 +95,7 @@ If you would like to update an entry in the 'Holdings' table with your current b
 babel . --out-dir ./transpiled --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'; node transpiled/setup/plaid_access_token_fetcher.js
 ```
 
-This will print the `accessToken` associated with the bank account details. In order to tell the program which record in the Airtable 'Holdings' table this accessToken is associated with, edit the `airtableHoldingNameToAccessToken` object in the `config.js` file.
+This will print the `accessToken` associated with the bank account details. In order to tell the program which record in the Airtable 'Assets' table this accessToken is associated with, edit the `airtableAssetNameToAccessToken` object in the `config.js` file.
 
 Config.js File Location:
 
@@ -103,20 +103,20 @@ Config.js File Location:
 plaidCredentials: {
     clientId: process.env.PLAID_CLIENT_ID,
     secret: process.env.PLAID_SECRET,
-    // Maps the identifying 'Name' field value in the 'Holdings' table in Airtable
-    // with the Plaid accessToken associated with the holding bank account
-    airtableHoldingNameToAccessToken: {
+    // Maps the identifying 'Name' field value in the 'Assets' table in Airtable
+    // with the Plaid accessToken associated with the asset bank account
+    airtableAssetNameToAccessToken: {
         'Chase Bank Balance': process.env.PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT,
     },
 },
 ```
-So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it. We should also make sure that we have a record in the 'Holdings' table in our **Investment Tracker** base on Airtable.com with the name: 'Chase Bank Balance'. This was, the server knows which record to update in Airtable with the account balance.
+So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it. We should also make sure that we have a record in the 'Assets' table in our **Investment Tracker** base on Airtable.com with the name: 'Chase Bank Balance'. This was, the server knows which record to update in Airtable with the account balance.
 
 
-**Note:** If you don't want to activate balance updates, simply remove all entries from `airtableHoldingNameToAccessToken` and balance updates will be skipped.
+**Note:** If you don't want to activate balance updates, simply remove all entries from `airtableAssetNameToAccessToken` and balance updates will be skipped.
 
 ```
-airtableHoldingNameToAccessToken: {}, // Leave this empty
+airtableAssetNameToAccessToken: {}, // Leave this empty
 ```
 
 ## Starting the server

@@ -15,8 +15,8 @@ const airtable = {
     async fetchRecordIdForCurrencyAsync(currency) {
         return promisify(this.fetchRecordIdForField.bind(this))('Currencies', 'Symbol', currency);
     },
-    async fetchRecordIdForHoldingAsync(holding) {
-        return promisify(this.fetchRecordIdForField.bind(this))('Holdings', 'Funds', holding);
+    async fetchRecordIdForHoldingAsync(asset) {
+        return promisify(this.fetchRecordIdForField.bind(this))('Assets', 'Funds', asset);
     },
     fetchRecordIdForField(tableName, fieldName, fieldValue, done) {
         base(tableName).select({

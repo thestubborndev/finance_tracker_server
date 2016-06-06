@@ -5,7 +5,7 @@ const config = require('./config');
 const airtable = require('./airtable');
 const coinMarketCap = require('./coin_market_cap');
 const Currencies = require('./currencies');
-const Holdings = require('./holdings');
+const Assets = require('./assets');
 const openExchangeRates = require('./open_exchange_rates');
 
 const plaidClient = new plaid.Client(config.plaidCredentials.clientId, config.plaidCredentials.secret, plaid.environments.tartan);
@@ -51,17 +51,17 @@ const accountSync = {
         const currencyRecordId = await airtable.fetchRecordIdForCurrencyAsync(currencyName);
         await airtable.updateAsync('Currencies', 'Price', currencyRecordId, priceInDollars);
     },
-    async updateHoldingAmountAsync(holdingName, amountInDollars) {
-        const holdingRecordId = await airtable.fetchRecordIdForHoldingAsync(holdingName);
-        await airtable.updateAsync('Holdings', 'Amount', holdingRecordId, amountInDollars);
+    async updateHoldingAmountAsync(assetName, amountInDollars) {
+        const assetRecordId = await airtable.fetchRecordIdForHoldingAsync(assetName);
+        await airtable.updateAsync('Assets', 'Amount', assetRecordId, amountInDollars);
     },
     async fetchAndUpdateBankBalancesAsync() {
-        const airtableHoldingNameToAccessToken = config.plaidCredentials.airtableHoldingNameToAccessToken;
-        for (const airtableHoldingName in airtableHoldingNameToAccessToken) {
-            if (!airtableHoldingNameToAccessToken.hasOwnProperty(airtableHoldingName)) {
+        const airtableAssetNameToAccessToken = config.plaidCredentials.airtableAssetNameToAccessToken;
+        for (const airtableHoldingName in airtableAssetNameToAccessToken) {
+            if (!airtableAssetNameToAccessToken.hasOwnProperty(airtableHoldingName)) {
                 continue;
             }
-            const accessToken = airtableHoldingNameToAccessToken[airtableHoldingName];
+            const accessToken = airtableAssetNameToAccessToken[airtableHoldingName];
             const response = await promisify(plaidClient.getBalance.bind(plaidClient))(accessToken);
             let currentBalance = 0;
             _.each(response.accounts, account => {

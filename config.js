@@ -11,9 +11,9 @@ const config = {
     plaidCredentials: {
         clientId: process.env.PLAID_CLIENT_ID,
         secret: process.env.PLAID_SECRET,
-        // Maps the identifying 'Name' field value in the 'Holdings' table in Airtable
-        // with the Plaid accessToken associated with the holding bank account
-        airtableHoldingNameToAccessToken: {
+        // Maps the identifying 'Name' field value in the 'Assets' table in Airtable
+        // with the Plaid accessToken associated with the asset bank account
+        airtableAssetNameToAccessToken: {
             'Chase Bank Balance': process.env.PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT,
         },
     },

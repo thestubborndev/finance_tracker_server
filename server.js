@@ -28,7 +28,7 @@ app.get('/:airtableId', deAsync(async function(req, res) {
         }
         // If an accessToken is not specified in the config file, do not attempt
         // to update the account balance
-        if (_.size(config.plaidCredentials.airtableHoldingNameToAccessToken)) {
+        if (_.size(config.plaidCredentials.airtableAssetNameToAccessToken)) {
             await accountSync.fetchAndUpdateBankBalancesAsync();
         }
     } catch (err) {
