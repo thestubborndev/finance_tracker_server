@@ -23,7 +23,7 @@ app.get('/:airtableId', deAsync(async function(req, res) {
     try {
         await accountSync.fetchAndUpdateCryptoAssetsAsync();
         // If no openExchangeRates API key specified, don't update fiat currencies
-        if (config.openExchangeRates.apiKey) {
+        if (config.openExchangeCredentials.apiKey) {
             await accountSync.fetchAndUpdateFiatCurrenciesAsync();
         }
         // If an accessToken is not specified in the config file, do not attempt
