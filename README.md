@@ -6,13 +6,43 @@ See the [live base template here.](https://airtable.com/shrA09QDhlYHBPMB3)
 
 ## Set up
 
-In order to run this app locally, you will need nodejs installed on your computer ([download and install here](https://nodejs.org/en/download/))
+In order to run this app locally, you will need [Nodejs](https://nodejs.org/en/download/).
 
 After cloning this repository, run `npm install` from the projects directory to install it's dependencies.
 
+### Choose currencies to update
+
+By default, the server will update the exchange rates of `Ether`, `Bitcoin` and `CHF`. You can easily customize the currencies you want updated by adding/removing them from the `config.js` file. 
+
+#### Crypto Assets
+
+Customize the crypto-assets updated by modifying the `cryptoAssetsToUpdate` list.
+
+```
+cryptoAssetsToUpdate: [
+    Currencies.ethereum,
+    Currencies.bitcoin,
+],
+```
+- See `crypto_assets.js` for full list of supported crypto-assets.
+- Source of prices: [CoinMarketCap API](http://coinMarketCap.com/api).
+
+#### Fiat Currencies
+
+Customize the fiat currencies updated by modifying the `fiatCurrenciesToUpdate` list
+
+```
+fiatCurrenciesToUpdate: [
+    Currencies.CHF,
+],
+```
+- See `fiat_currencies.js` for full list of supported currencies.
+- Source of prices: [OpenExchangeRates.org API](https://openexchangerates.org)
+
+
 ### External accounts
 
-Since this app speaks with multiple third-party services in order to update exchange rates, bank balances and the Airtable base, you will need to update a bunch of API credentials and Airtable Id's all conveniently located in the `config.js` file. Open it up in your favorite text editor and lets go through each one step by step.
+Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and the Airtable base, you will need to update some API credentials conveniently located in the `config.js` file. Open it up in your favorite text editor and lets go through each one step by step.
 
 #### Airtable
 
@@ -26,25 +56,34 @@ You will need to [sign up](https://airtable.com/) for an Airtable account. Once 
 
 4. Next, copy/paste the appId corresponding to the `Investment Tracker` base from the example request URL (it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
 
-5. Every piece of information we will want to update on Airtable has an associated `recordId`. Find the recordIds for `Ether`, `Bitcoin`, `CHF` in the `Currencies` table and for `Chase Bank` in the `Holdings` table and update the recordIds in the `currencyToRecordId` and `holdingToRecordId` objects at the top of the config file.
+Config.js File Location:
+
+```
+airtableCredentials: {
+    apiKey: process.env.AIRTABLE_API_KEY,
+    appId: process.env.AIRTABLE_APP_ID,
+},
+```
 
 And that's it for Airtable!
 
-#### Open Exchange Rates
+#### Open Exchange Rates (Optional)
 
-If you are interested in updating the USD value of bank accounts denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key to set in the config file. If you don't care for other fiat currencies, you can simply comment-out/remove the following line from the `server.js` file:
+If you are interested in updating the USD value of bank accounts denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Set in the config file or set it as an environment variable.
 
 ```
-await accountSync.fetchAndUpdateFiatCurrenciesAsync(Currencies.CHF);
+openExchangeCredentials: {
+   apiKey: process.env.OPEN_EXCHANGE_API_KEY,
+},
 ```
 
-This will remove the updating of the CHF/USD exchange rate. Alternatively you could pass in a different fiat into this function that you care to track.
+If you don't care to update other fiat currency exchanges, don't add an API key and fiat currency updates will be skipped.
 
-#### Plaid Bank Integration
+#### Plaid Bank Integration (Optional)
 
-In order to pull a bank balance into your Investment Tracker, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connecting to many banks with your online banking credentials and once authenticated, you can request your current bank balance. At the time of writing, this was free for up to 100 connected accounts.
+If you would like to update an entry in the 'Holdings' table with your current bank balance, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connecting to many banks with your online banking credentials and once authenticated, you can request your current bank balance easily. At the time of writing, this was free for up to 100 connected accounts.
 
-1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId`, and `secret` in the `config.js` file.
+1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId` and `secret` in the `config.js` file.
 
 2. Next, we need to retrieve an `accessToken` associated with your online banking login credentials. To make this as painless a process as possible, I wrote a small script that should help you get this in a matter of seconds. Open the `plaid_access_token_fetcher.js` file thats inside the `setup` folder. Fill in your online banking username and password credentials, choose your banking institition and run this script with the following command:
 
@@ -54,11 +93,11 @@ babel . --out-dir ./transpiled --ignore '**node_modules,.git,transpiled' -x '.es
 
 This will print your `accessToken` into the terminal from where you can copy/paste it into the `config.js` file.
 
-And you're done integrating with Plaid!
+If you don't want to activate balance updates, simply don't add the `accessToken` to `config.js` and balance updates will be skipped.
 
-### Starting the server
+## Starting the server
 
-By now, you should have hooked up all the external accounts! All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to start a transpiler in one terminal window and the server in another. To start the transpiler, open the project folder in terminal and run:
+By now, you should have hooked up all the external accounts you want! All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to start a transpiler in one terminal window and the server in another. To start the transpiler, open the project folder in terminal and run:
 
 ```
 babel . --out-dir ./transpiled --watch --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'
@@ -76,7 +115,7 @@ If everything worked, you should see the message:
 Server Running... If running locally, visit: localhost:3000/appCeLwipDDNrFMm2
 ```
 
-And just like it says, copy/paste the URL into a browser and that should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Investment Tracker base!
+Visiting the link in a browser should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Investment Tracker base!
 
 I hope this was helpful! Happy tracking and investing! :)
 
