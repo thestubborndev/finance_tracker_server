@@ -53,7 +53,7 @@ const accountSync = {
         _.each(response.accounts, account => {
             currentBalance += account.balance.available;
         });
-        await this.updateHoldingAmountAsync(Holdings.chaseBank, currentBalance);
+        await this.updateHoldingAmountAsync(Holdings.usBankBalance, currentBalance);
     },
 };
 
