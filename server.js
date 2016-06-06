@@ -22,9 +22,13 @@ app.get('/:airtableId', deAsync(async function(req, res) {
 
     try {
         await accountSync.fetchAndUpdateCryptoAssetsAsync();
-        await accountSync.fetchAndUpdateFiatCurrenciesAsync();
-        // If an accessToken is not specified in the config file,
-        if (process.env.PLAID_ACCESS_TOKEN) {
+        // If no openExchangeRates API key specified, don't update fiat currencies
+        if (config.openExchangeRates.apiKey) {
+            await accountSync.fetchAndUpdateFiatCurrenciesAsync();
+        }
+        // If an accessToken is not specified in the config file, do not attempt
+        // to update the account balance
+        if (config.plaidCredentials.accessToken) {
             await accountSync.fetchAndUpdateBankBalanceAsync();
         }
     } catch (err) {
