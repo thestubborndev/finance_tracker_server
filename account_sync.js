@@ -55,13 +55,20 @@ const accountSync = {
         const holdingRecordId = await airtable.fetchRecordIdForHoldingAsync(holdingName);
         await airtable.updateAsync('Holdings', 'Amount', holdingRecordId, amountInDollars);
     },
-    async fetchAndUpdateBankBalanceAsync() {
-        const response = await promisify(plaidClient.getBalance.bind(plaidClient))(config.plaidCredentials.accessToken);
-        let currentBalance = 0;
-        _.each(response.accounts, account => {
-            currentBalance += account.balance.available;
-        });
-        await this.updateHoldingAmountAsync(Holdings.usBankBalance, currentBalance);
+    async fetchAndUpdateBankBalancesAsync() {
+        const airtableHoldingNameToAccessToken = config.plaidCredentials.airtableHoldingNameToAccessToken;
+        for (const airtableHoldingName in airtableHoldingNameToAccessToken) {
+            if (!airtableHoldingNameToAccessToken.hasOwnProperty(airtableHoldingName)) {
+                continue;
+            }
+            const accessToken = airtableHoldingNameToAccessToken[airtableHoldingName];
+            const response = await promisify(plaidClient.getBalance.bind(plaidClient))(accessToken);
+            let currentBalance = 0;
+            _.each(response.accounts, account => {
+                currentBalance += account.balance.available;
+            });
+            await this.updateHoldingAmountAsync(airtableHoldingName, currentBalance);
+        }
     },
 };
 

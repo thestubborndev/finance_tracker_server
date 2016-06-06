@@ -11,7 +11,11 @@ const config = {
     plaidCredentials: {
         clientId: process.env.PLAID_CLIENT_ID,
         secret: process.env.PLAID_SECRET,
-        accessToken: process.env.PLAID_ACCESS_TOKEN,
+        // Maps the identifying 'Name' field value in the 'Holdings' table on Airtable
+        // with the Plaid accessToken associated with the holding bank account
+        airtableHoldingNameToAccessToken: {
+            'Chase Bank Balance': process.env.PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT,
+        },
     },
     // Add to this list the crypto-assets you wish to update
     // All possible assets listed in: crypto_assets.js
