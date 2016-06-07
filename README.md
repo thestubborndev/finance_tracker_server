@@ -1,8 +1,8 @@
 Finance Tracker is a web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, all the updates will be made and you will be redirected to the updated Airtable base.
 
-![Finance Tracker Base](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
+See the [related blog post here.](http://fabioberger.com/post/2016-06-05-finance-tracker-using-airtable/)
 
-See the [live base template here.](https://airtable.com/shrA09QDhlYHBPMB3)
+<iframe class="airtable-embed" src="https://airtable.com/embed/shrA09QDhlYHBPMB3?backgroundColor=red" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
 
 ## Set up
 
@@ -44,13 +44,13 @@ fiatCurrenciesToUpdate: [
 
 ### External accounts
 
-Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and the Airtable base, you will need to update some API credentials conveniently located in the `config.js` file. Lets go through them step-by-step.
+Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to update some API credentials conveniently located in the `config.js` file. Lets go through them step-by-step.
 
 #### Airtable
 
 You will need to [sign up](https://airtable.com/) for an Airtable account. Once you have an account:
 
-1. [Install the Finance Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button in the top right corner.
+1. [Install the Finance Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button.
 
 2. Visit the [Airtable API page](https://airtable.com/api), select the Finance Tracker base from the list to see it's custom documentation.
 
@@ -110,7 +110,7 @@ plaidCredentials: {
     },
 },
 ```
-So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it. We should also make sure that we have a record in the 'Assets' table in our **Finance Tracker** base on Airtable.com with the name: 'Chase Bank Balance'. This was, the server knows which record to update in Airtable with the account balance.
+So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it. We should also make sure that we have a record in the 'Assets' table in our **Finance Tracker** base on Airtable with the name: 'Chase Bank Balance'. This way, the server knows which record to update in Airtable with the account balance. You can add multiple `accessToken` to Airtable record name pairs to `airtableAssetNameToAccessToken`, allowing you to update multiple account balances. 
 
 
 **Note:** If you don't want to activate balance updates, simply remove all entries from `airtableAssetNameToAccessToken` and balance updates will be skipped.
@@ -143,13 +143,11 @@ Visiting the link in a browser should kick off the crypto/fiat currency and bank
 
 I hope this was helpful! Happy tracking and investing! :)
 
-PS: If I were deploying this to a server somewhere, I would use an error tracking service like [Rollbar](https://rollbar.com/) to notify me of errors so that I could fix things if anything broke or stopped working!
-
 ## Developing
 
 If you want to make more extensive changes to the code, feel free to do so! If it does something awesome, submit a pull request!
 
-When developing, it's more convenient to have "transpile on write" set up. To do this, run the following command from a terminal window:
+When developing, it's more convenient to have "transpile on save" set up. To do this, run the following command from a terminal window:
 
 ```
 babel . --out-dir ./transpiled --watch --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'
