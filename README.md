@@ -2,7 +2,9 @@ Finance Tracker is a web server that updates crypto/fiat currency exchanges and 
 
 See the [related blog post here.](http://fabioberger.com/post/2016-06-05-finance-tracker-using-airtable/)
 
-<iframe class="airtable-embed" src="https://airtable.com/embed/shrA09QDhlYHBPMB3?backgroundColor=red" frameborder="0" onmousewheel="" width="100%" height="533" style="background: transparent; border: 1px solid #ccc;"></iframe>
+![Finance Tracker Base](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
+
+See the [live base template here.](https://airtable.com/shrA09QDhlYHBPMB3)
 
 ## Set up
 
