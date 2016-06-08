@@ -55,7 +55,7 @@ In order to customize which fiat currencies you want updated, modify the `fiatCu
 
 ```
 fiatCurrenciesToUpdate: [
-    Currencies.CHF,
+    Currencies['CHF'],
 ],
 ```
 - See `fiat_currencies.js` for full list of supported currencies.
@@ -66,12 +66,13 @@ If you don't care to update other fiat currency exchanges, don't add an API key 
 
 The CoinMarketCap API is public and free to use. All you need to do, is choose which crypto-assets you'd like to keep updated.
 
-Customize the crypto-assets updated by modifying the `cryptoAssetsToUpdate` list. By default it is only updating `ether` and `bitcoin`.
+Customize the crypto-assets updated by modifying the `cryptoAssetsToUpdate` list. By default it is only updating `ether`, `dao tokens` and `bitcoin`.
 
 ```
 cryptoAssetsToUpdate: [
-    Currencies.ethereum,
-    Currencies.bitcoin,
+    Currencies['ethereum'],
+    Currencies['bitcoin'],
+    Currencies['the-dao'],
 ],
 ```
 - See `crypto_assets.js` for full list of supported crypto-assets.
