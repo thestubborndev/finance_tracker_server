@@ -20,13 +20,13 @@ const config = {
     // Add to this list the crypto-assets you wish to update
     // All possible assets listed in: crypto_assets.js
     cryptoAssetsToUpdate: [
-        Currencies.ethereum,
-        Currencies.bitcoin,
+        Currencies['ethereum'],
+        Currencies['bitcoin'],
     ],
     // Add to this list the fiat currencies you wish to update
     // All possible Fiat Currencies listed in: fiat_currencies.js
     fiatCurrenciesToUpdate: [
-        Currencies.CHF,
+        Currencies['CHF'],
     ],
 };
 

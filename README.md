@@ -83,10 +83,10 @@ If you would like to update an entry in the 'Assets' table with your current ban
 
 1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId` and `secret` in the `config.js` file.
 
-2. Next, we need to retrieve an `accessToken` associated with the bank account balances you'd like to keep track of. Each `accessToken` is connected to an online banking login credential. To make this as painless as possible, I wrote a small script that should help you get `accessTokens` in a matter of seconds. Open the `plaid_access_token_fetcher.js` file thats inside the `setup` folder. Fill in your online banking username and password credentials, choose your banking institition and run this script with the following command:
+2. Next, we need to retrieve an `accessToken` associated each of the bank account balances you'd like to keep track of. Each `accessToken` is connected to an online banking login credential. To make this as painless as possible, I wrote a small script that should help you get `accessTokens` in a matter of seconds. Open the `plaid_access_token_fetcher.js` file thats inside the `setup` folder. Fill in your online banking username and password credentials, choose your banking institition and run this script with the following command:
 
 ```
-node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx';; node transpiled/setup/plaid_access_token_fetcher.js
+node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'; node transpiled/setup/plaid_access_token_fetcher.js
 ```
 
 This will print the `accessToken` associated with the bank account details. In order to tell the program which record in the Airtable 'Assets' table this accessToken is associated with, edit the `airtableAssetNameToAccessToken` object in the `config.js` file.
