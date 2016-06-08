@@ -24,11 +24,9 @@ You will need to [sign up](https://airtable.com/) for an Airtable account. Once 
 
 1. [Install the Finance Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button.
 
-2. Visit the [Airtable API page](https://airtable.com/api), select the Finance Tracker base from the list to see it's custom documentation.
+2. Visit your [user account page](https://airtable.com/account) in order to click the "Generate API key" link. Copy and paste your key into the config file to replace `process.env.AIRTABLE_API_KEY` or set it as an environment variable on your computer.
 
-3. If you check the "show API key" box in the top right, your API key will be within the code examples (e.g `keyYfG4QKO1heNMNv`). Copy and paste it into the config file to replace `process.env.AIRTABLE_API_KEY` or set it as an environment variable on your computer.
-
-4. Next, copy/paste the appId corresponding to the `Finance Tracker` base from the example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
+4. Next, go to the [Airtable API page](https://airtable.com/api), select the Finance Tracker base from the list to see it's custom documentation. Copy/paste the appId corresponding to the `Finance Tracker` base from the example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
 
 Config.js File Location:
 
