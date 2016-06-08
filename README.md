@@ -1,10 +1,10 @@
-Finance Tracker is a web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, all the updates will be made and you will be redirected to the updated Airtable base.
+Finance Tracker Server is a simple web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, you will be redirected to your updated Finance Tracker Airtable base.
 
 See the [related blog post here.](http://fabioberger.com/post/2016-06-05-finance-tracker-using-airtable/)
 
 ![Finance Tracker Base](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
 
-See the [live base template here.](https://airtable.com/shrA09QDhlYHBPMB3)
+See the [live open-source template here.](https://airtable.com/shrA09QDhlYHBPMB3)
 
 ## Set up
 
@@ -13,36 +13,6 @@ In order to run this app locally, you will need to [install nodejs](https://node
 After cloning this repository, run `npm install` from the projects directory to install it's dependencies.
 
 The remaining setup steps will require you to edit a single file: `config.js`. Open it now in your favorite text editor and follow the remaining instructions.
-
-### Choose currencies to update
-
-By default, the server will update the exchange rates for `Ether`, `Bitcoin` and `CHF`, however, You can easily customize the currencies you want updated.
-
-#### Crypto Assets
-
-Customize the crypto-assets updated by modifying the `cryptoAssetsToUpdate` list.
-
-```
-cryptoAssetsToUpdate: [
-    Currencies.ethereum,
-    Currencies.bitcoin,
-],
-```
-- See `crypto_assets.js` for full list of supported crypto-assets.
-- Source of prices: [CoinMarketCap API](http://coinMarketCap.com/api).
-
-#### Fiat Currencies
-
-Customize the fiat currencies updated by modifying the `fiatCurrenciesToUpdate` list.
-
-```
-fiatCurrenciesToUpdate: [
-    Currencies.CHF,
-],
-```
-- See `fiat_currencies.js` for full list of supported currencies.
-- Source of prices: [OpenExchangeRates.org API](https://openexchangerates.org)
-
 
 ### External accounts
 
@@ -73,7 +43,7 @@ And that's it for Airtable!
 
 #### Open Exchange Rates (Optional)
 
-If you are interested in updating the USD value of assets denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Set in the config file or set it as an environment variable.
+If you are interested in updating the USD value of assets denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Replace `process.env.OPEN_EXCHANGE_API_KEY` with it or set it as an environment variable.
 
 Config.js File Location:
 
@@ -83,7 +53,30 @@ openExchangeCredentials: {
 },
 ```
 
+In order to customize which fiat currencies you want updated, modify the `fiatCurrenciesToUpdate` list. The default is for it to simply update the Swiss Franc to USD exchange.
+
+```
+fiatCurrenciesToUpdate: [
+    Currencies.CHF,
+],
+```
+- See `fiat_currencies.js` for full list of supported currencies.
+
 If you don't care to update other fiat currency exchanges, don't add an API key and fiat currency updates will be skipped.
+
+#### CoinMarketCap API (Optional)
+
+The CoinMarketCap API is public and free to use. All you need to do, is choose which crypto-assets you'd like to keep updated.
+
+Customize the crypto-assets updated by modifying the `cryptoAssetsToUpdate` list. By default it is only updating `ether` and `bitcoin`.
+
+```
+cryptoAssetsToUpdate: [
+    Currencies.ethereum,
+    Currencies.bitcoin,
+],
+```
+- See `crypto_assets.js` for full list of supported crypto-assets.
 
 #### Plaid Bank Integration (Optional)
 
@@ -91,10 +84,10 @@ If you would like to update an entry in the 'Assets' table with your current ban
 
 1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId` and `secret` in the `config.js` file.
 
-2. Next, we need to retrieve an `accessToken` associated with the bank account balances you'd like to keep track of. Each `accessToken` is connected to an online banking login credential. To make this as painless a process as possible, I wrote a small script that should help you get `accessTokens` in a matter of seconds. Open the `plaid_access_token_fetcher.js` file thats inside the `setup` folder. Fill in your online banking username and password credentials, choose your banking institition and run this script with the following command:
+2. Next, we need to retrieve an `accessToken` associated with the bank account balances you'd like to keep track of. Each `accessToken` is connected to an online banking login credential. To make this as painless as possible, I wrote a small script that should help you get `accessTokens` in a matter of seconds. Open the `plaid_access_token_fetcher.js` file thats inside the `setup` folder. Fill in your online banking username and password credentials, choose your banking institition and run this script with the following command:
 
 ```
-babel . --out-dir ./transpiled --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'; node transpiled/setup/plaid_access_token_fetcher.js
+node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx';; node transpiled/setup/plaid_access_token_fetcher.js
 ```
 
 This will print the `accessToken` associated with the bank account details. In order to tell the program which record in the Airtable 'Assets' table this accessToken is associated with, edit the `airtableAssetNameToAccessToken` object in the `config.js` file.
@@ -112,7 +105,7 @@ plaidCredentials: {
     },
 },
 ```
-So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it. We should also make sure that we have a record in the 'Assets' table in our **Finance Tracker** base on Airtable with the name: 'Chase Bank Balance'. This way, the server knows which record to update in Airtable with the account balance. You can add multiple `accessToken` to Airtable record name pairs to `airtableAssetNameToAccessToken`, allowing you to update multiple account balances. 
+So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it above. We should also make sure that we have a record in the 'Assets' table in our **Finance Tracker** base on Airtable with the name: 'Chase Bank Balance'. This way, the server knows which record to update in Airtable with the account balance. You can add multiple `accessToken` to Airtable record name pairs to `airtableAssetNameToAccessToken`, allowing you to update multiple account balances.
 
 
 **Note:** If you don't want to activate balance updates, simply remove all entries from `airtableAssetNameToAccessToken` and balance updates will be skipped.
@@ -126,7 +119,7 @@ airtableAssetNameToAccessToken: {}, // Leave this empty
 By now, you should have hooked up all the external accounts you want! All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to transpile the project before starting the server. To transpile the project, run the following from the project directory:
 
 ```
-babel . --out-dir ./transpiled --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'
+node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx';
 ```
 
 Now run:
@@ -143,6 +136,8 @@ Server Running... If running locally, visit: localhost:3000/appCeLwipDDNrFMm2
 
 Visiting the link in a browser should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Finance Tracker base!
 
+**Pro Tip:** Hitting Cmd-click on the terminal link will open it in a browser window
+
 I hope this was helpful! Happy tracking and investing! :)
 
 ## Developing
@@ -152,7 +147,7 @@ If you want to make more extensive changes to the code, feel free to do so! If i
 When developing, it's more convenient to have "transpile on save" set up. To do this, run the following command from a terminal window:
 
 ```
-babel . --out-dir ./transpiled --watch --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'
+node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --watch --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx';
 ```
 
 And run the server from another terminal window:
