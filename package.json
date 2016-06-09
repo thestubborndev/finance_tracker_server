@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "airtable": "^0.4.1",
+    "assert": "^1.4.1",
     "babel-core": "^6.9.1",
     "babel-polyfill": "^6.9.1",
     "es6-promisify": "^4.1.0",

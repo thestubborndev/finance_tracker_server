@@ -2,13 +2,12 @@ const _ = require('lodash');
 const promisify = require('es6-promisify');
 const plaid = require('plaid');
 const config = require('./config');
-const airtable = require('./airtable');
+const Airtable = require('./airtable');
 const coinMarketCap = require('./coin_market_cap');
 const Currencies = require('./currencies');
-const Assets = require('./assets');
 const openExchangeRates = require('./open_exchange_rates');
 
-const plaidClient = new plaid.Client(config.plaidCredentials.clientId, config.plaidCredentials.secret, plaid.environments.tartan);
+const airtable = new Airtable();
 
 const accountSync = {
     async fetchAndUpdateCryptoAssetsAsync() {
@@ -27,12 +26,12 @@ const accountSync = {
                         it to the enum in order to resolve this error.
                     `);
                 }
-                await this.updateCurrencyPriceAsync(currencyName, priceInDollars);
+                await airtable.updateCurrencyPriceAsync(currencyName, priceInDollars);
             }
         }
     },
     async fetchAndUpdateFiatCurrenciesAsync(fiatCurrencyName) {
-        if (config.fiatCurrenciesToUpdate.length === 0) {
+        if (config.fiatCurrenciesToUpdate.length === 0 || _.isUndefined(config.openExchangeCredentials.apiKey)) {
             return; // short-circuit if no fiat currency updates wanted
         }
 
@@ -43,31 +42,37 @@ const accountSync = {
             }
             if (_.indexOf(config.fiatCurrenciesToUpdate, currencyName) !== -1) {
                 const priceInDollars = 1 / fiatCurrencyExchangeRates[currencyName];
-                await this.updateCurrencyPriceAsync(currencyName, priceInDollars);
+                await airtable.updateCurrencyPriceAsync(currencyName, priceInDollars);
             }
         }
     },
-    async updateCurrencyPriceAsync(currencyName, priceInDollars) {
-        const currencyRecordId = await airtable.fetchRecordIdForCurrencyAsync(currencyName);
-        await airtable.updateAsync('Currencies', 'Price', currencyRecordId, priceInDollars);
-    },
-    async updateHoldingAmountAsync(assetName, amountInDollars) {
-        const assetRecordId = await airtable.fetchRecordIdForHoldingAsync(assetName);
-        await airtable.updateAsync('Assets', 'Amount', assetRecordId, amountInDollars);
-    },
     async fetchAndUpdateBankBalancesAsync() {
+        if (_.isUndefined(config.plaidCredentials.clientId) || _.isUndefined(config.plaidCredentials.secret)) {
+            return; // short-circuit if no API credentials added
+        }
+
+        const plaidClient = new plaid.Client(config.plaidCredentials.clientId, config.plaidCredentials.secret, plaid.environments.tartan);
+
         const airtableAssetNameToAccessToken = config.plaidCredentials.airtableAssetNameToAccessToken;
         for (const airtableHoldingName in airtableAssetNameToAccessToken) {
             if (!airtableAssetNameToAccessToken.hasOwnProperty(airtableHoldingName)) {
                 continue;
             }
             const accessToken = airtableAssetNameToAccessToken[airtableHoldingName];
+            if (_.isUndefined(accessToken)) {
+                console.log(`
+                    Warning: An undefined Plaid accessToken encountered.
+                    Please make sure you have set a valid accessToken along
+                    with your Plaid clientId and secret.
+                `);
+                continue;
+            }
             const response = await promisify(plaidClient.getBalance.bind(plaidClient))(accessToken);
             let currentBalance = 0;
             _.each(response.accounts, account => {
                 currentBalance += account.balance.available;
             });
-            await this.updateHoldingAmountAsync(airtableHoldingName, currentBalance);
+            await airtable.updateHoldingAmountAsync(airtableHoldingName, currentBalance);
         }
     },
 };

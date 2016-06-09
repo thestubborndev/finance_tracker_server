@@ -22,6 +22,7 @@ const config = {
     cryptoAssetsToUpdate: [
         Currencies['ethereum'],
         Currencies['bitcoin'],
+        Currencies['the-dao'],
     ],
     // Add to this list the fiat currencies you wish to update
     // All possible Fiat Currencies listed in: fiat_currencies.js

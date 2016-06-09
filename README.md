@@ -6,7 +6,7 @@ See the [related blog post here.](http://fabioberger.com/post/2016-06-05-finance
 
 See the [live example template here.](https://airtable.com/shrA09QDhlYHBPMB3)
 
-## Set up
+## Setup
 
 In order to run this app locally, you will need to [install nodejs](https://nodejs.org/en/download/).
 
@@ -16,7 +16,7 @@ The remaining setup steps will require you to edit a single file: `config.js`. O
 
 ### External accounts
 
-Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to update some API credentials conveniently located in the `config.js` file. Lets go through them step-by-step.
+Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to set some API credentials as environment variables and edit some options in `config.js`. Lets go through them step-by-step.
 
 #### Airtable
 
@@ -24,34 +24,22 @@ You will need to [sign up](https://airtable.com/) for an Airtable account. Once 
 
 1. [Install the Finance Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button.
 
-2. Visit your [user account page](https://airtable.com/account) in order to click the "Generate API key" link. Copy and paste your key into the config file to replace `process.env.AIRTABLE_API_KEY` or set it as an environment variable on your computer.
+2. Visit your [user account page](https://airtable.com/account) in order to click the "Generate API key" link. Set this as an environment variable by running `export AIRTABLE_API_KEY=[your-api-key]` in terminal.
 
-4. Next, go to the [Airtable API page](https://airtable.com/api), select the Finance Tracker base from the list to see it's custom documentation. Copy/paste the appId corresponding to the `Finance Tracker` base from the example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`) to the config file.
-
-Config.js File Location:
-
-```
-airtableCredentials: {
-    apiKey: process.env.AIRTABLE_API_KEY,
-    appId: process.env.AIRTABLE_APP_ID,
-},
-```
+4. Next, go to the [Airtable API page](https://airtable.com/api), select the Finance Tracker base from the list to see it's custom documentation. set as an environment variable the appId corresponding to the `Finance Tracker` base from an example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`) with `export AIRTABLE_APP_ID=[your-app-id]` in terminal.
 
 And that's it for Airtable!
 
 #### Open Exchange Rates (Optional)
 
-If you are interested in updating the USD value of assets denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Replace `process.env.OPEN_EXCHANGE_API_KEY` with it or set it as an environment variable.
+If you are interested in updating the USD value of assets denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Run:
 
-Config.js File Location:
-
+``` bash
+export OPEN_EXCHANGE_API_KEY=[your-oex-api-key]
 ```
-openExchangeCredentials: {
-   apiKey: process.env.OPEN_EXCHANGE_API_KEY,
-},
-```
+from terminal.
 
-In order to customize which fiat currencies you want updated, modify the `fiatCurrenciesToUpdate` list. The default is for it to simply update the Swiss Franc to USD exchange.
+In order to customize which fiat currencies you want updated, modify the `fiatCurrenciesToUpdate` list in `config.js`. The default is for it to simply update the Swiss Franc to USD exchange.
 
 ```
 fiatCurrenciesToUpdate: [
@@ -66,7 +54,7 @@ If you don't care to update other fiat currency exchanges, don't add an API key 
 
 The CoinMarketCap API is public and free to use. All you need to do, is choose which crypto-assets you'd like to keep updated.
 
-Customize the crypto-assets updated by modifying the `cryptoAssetsToUpdate` list. By default it is only updating `ether`, `dao tokens` and `bitcoin`.
+Customize the crypto-assets updated by modifying the `cryptoAssetsToUpdate` list in `config.js`. By default it is only updating `ether`, `dao tokens` and `bitcoin`.
 
 ```
 cryptoAssetsToUpdate: [
@@ -81,9 +69,9 @@ cryptoAssetsToUpdate: [
 
 If you would like to update an entry in the 'Assets' table with your current bank balance, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connecting to many US banks with online banking credentials and once authenticated, you can request your current bank balance easily. At the time of writing, this was free for up to 100 connected accounts.
 
-1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and update the Plaid `clientId` and `secret` in the `config.js` file.
+1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and set the Plaid `clientId` and `secret` as environment variables: `export PLAID_CLIENT_ID=[your-plaid-secret]` and `export PLAID_SECRET=[your-plaid-secret]`
 
-2. Next, we need to retrieve an `accessToken` associated each of the bank account balances you'd like to keep track of. Each `accessToken` is connected to an online banking login credential. To make this as painless as possible, I wrote a small script that should help you get `accessTokens` in a matter of seconds. Open the `plaid_access_token_fetcher.js` file thats inside the `setup` folder. Fill in your online banking username and password credentials, choose your banking institition and run this script with the following command:
+2. Next, we need to retrieve an `accessToken` associated with each of the bank account balances you'd like to keep track of. Each `accessToken` is connected to an online banking login credential. To make this as painless as possible, I wrote a small script that should help you get `accessTokens` in a matter of seconds. Open the `plaid_access_token_fetcher.js` file thats inside the `setup` folder. Fill in your online banking username and password credentials, choose your banking institition and run this script with the following command:
 
 ```
 node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'; node transpiled/setup/plaid_access_token_fetcher.js
@@ -95,8 +83,7 @@ Config.js File Location:
 
 ```
 plaidCredentials: {
-    clientId: process.env.PLAID_CLIENT_ID,
-    secret: process.env.PLAID_SECRET,
+	...
     // Maps the identifying 'Name' field value in the 'Assets' table in Airtable
     // with the Plaid accessToken associated with the asset bank account
     airtableAssetNameToAccessToken: {
@@ -104,16 +91,16 @@ plaidCredentials: {
     },
 },
 ```
-So if we just generated the `accessToken` for our Chase Bank account, we would either set the environment variable `PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT` with the access token or hard-code it above. We should also make sure that we have a record in the 'Assets' table in our **Finance Tracker** base on Airtable with the name: 'Chase Bank Balance'. This way, the server knows which record to update in Airtable with the account balance. You can add multiple `accessToken` to Airtable record name pairs to `airtableAssetNameToAccessToken`, allowing you to update multiple account balances.
+So if we just generated the `accessToken` for our Chase Bank account, we would set the environment variable `export PLAID_ACCESS_TOKEN_FOR_CHASE_ACCOUNT=[your-chase-access-token]`. We should also make sure that we have a record in the 'Assets' table in our **Finance Tracker** base on Airtable with the name: 'Chase Bank Balance'. This way, the server knows which record to update in Airtable with the account balance. You can add multiple `accessToken` to Airtable record name pairs to `airtableAssetNameToAccessToken`, allowing you to update multiple account balances.
 
 
-**Note:** If you don't want to activate balance updates, simply remove all entries from `airtableAssetNameToAccessToken` and balance updates will be skipped.
+**Note:** If you don't want to activate balance updates, simply do not add a Plaid clientId or secret.
 
 ```
 airtableAssetNameToAccessToken: {}, // Leave this empty
 ```
 
-## Starting the server
+## Run
 
 By now, you should have hooked up all the external accounts you want! All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to transpile the project before starting the server. To transpile the project, run the following from the project directory:
 
@@ -136,8 +123,6 @@ Server Running... If running locally, visit: localhost:3000/appCeLwipDDNrFMm2
 Visiting the link in a browser should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Finance Tracker base!
 
 **Pro Tip:** Hitting Cmd-click on the terminal link will open it in a browser window
-
-I hope this was helpful! Happy tracking and investing! :)
 
 ## Developing
 

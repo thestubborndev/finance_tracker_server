@@ -3,7 +3,7 @@ require('babel-polyfill');
 const _ = require('lodash');
 const express = require('express');
 const config = require('./config');
-const Currencies = require('./currencies');
+const utils = require('./utils');
 const accountSync = require('./account_sync');
 
 // deAsync allows us to convert an ES6 Async/Await function to a callback function
@@ -15,22 +15,15 @@ const app = express();
 
 app.get('/:airtableId', deAsync(async function(req, res) {
     const airtableId = req.params.airtableId;
-    if (airtableId.length !== 17 || (airtableId.slice(0, 3) !== 'tbl' && airtableId.slice(0, 3) !== 'app')) {
+    if (airtableId.length !== 17 || (utils.airtableIdPrefix(airtableId) !== 'tbl' && utils.airtableIdPrefix(airtableId) !== 'app')) {
         res.status(400).send('Invalid Request');
         return;
     }
 
     try {
         await accountSync.fetchAndUpdateCryptoAssetsAsync();
-        // If no openExchangeRates API key specified, don't update fiat currencies
-        if (config.openExchangeCredentials.apiKey) {
-            await accountSync.fetchAndUpdateFiatCurrenciesAsync();
-        }
-        // If an accessToken is not specified in the config file, do not attempt
-        // to update the account balance
-        if (_.size(config.plaidCredentials.airtableAssetNameToAccessToken)) {
-            await accountSync.fetchAndUpdateBankBalancesAsync();
-        }
+        await accountSync.fetchAndUpdateFiatCurrenciesAsync();
+        await accountSync.fetchAndUpdateBankBalancesAsync();
     } catch (err) {
         console.log('Error Encountered:', err);
         res.status(400).send('An Error Occurred');
@@ -39,7 +32,7 @@ app.get('/:airtableId', deAsync(async function(req, res) {
     res.redirect(`https://airtable.com/${airtableId}`);
 }));
 
-const port = process.env.FINANCE_TRACKER_PORT || 80;
+const port = 8080;
 app.listen(port, () => {
     console.log(`Server Running... If running locally, visit: http://localhost:${port}/${config.airtableCredentials.appId}`);
 });
