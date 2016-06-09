@@ -141,19 +141,3 @@ Server Running... If running locally, visit: localhost:3000/appCeLwipDDNrFMm2
 Visiting the link in a browser should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Finance Tracker base!
 
 **Pro Tip:** Hitting Cmd-click on the terminal link will open it in a browser window
-
-## Developing
-
-If you want to make more extensive changes to the code, feel free to do so! If it does something awesome, submit a pull request!
-
-When developing, it's more convenient to have "transpile on save" set up. To do this, run the following command from a terminal window:
-
-```
-node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --watch --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx';
-```
-
-And run the server from another terminal window:
-
-```
-node transpiled/server.js
-```
