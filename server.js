@@ -21,9 +21,11 @@ app.get('/:airtableId', deAsync(async function(req, res) {
     }
 
     try {
-        await accountSync.fetchAndUpdateCryptoAssetsAsync();
-        await accountSync.fetchAndUpdateFiatCurrenciesAsync();
-        await accountSync.fetchAndUpdateBankBalancesAsync();
+        Promise.all([
+            accountSync.fetchAndUpdateCryptoAssetsAsync(),
+            accountSync.fetchAndUpdateFiatCurrenciesAsync(),
+            accountSync.fetchAndUpdateBankBalancesAsync(),
+        ]);
     } catch (err) {
         console.log('Error Encountered:', err);
         res.status(400).send('An Error Occurred');
