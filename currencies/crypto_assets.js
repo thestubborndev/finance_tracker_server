@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const utils = require('../utils');
 
 // Source: https://coinmarketcap.com/api
 const cryptoAssetList = [
@@ -705,6 +706,6 @@ const cryptoAssetList = [
     'paccoin', // Paccoin
 ];
 
-const CryptoAssets = _.zipObject(cryptoAssetList, cryptoAssetList);
+const CryptoAssets = utils.keywords(cryptoAssetList);
 
 module.exports = CryptoAssets;

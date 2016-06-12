@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const utils = require('../utils');
 
 const fiatCurrencyList = [
     'AED', // United Arab Emirates Dirham
@@ -174,6 +175,6 @@ const fiatCurrencyList = [
     'ZWL', // Zimbabwean Dollar
 ];
 
-const FiatCurrencies = _.zipObject(fiatCurrencyList, fiatCurrencyList);
+const FiatCurrencies = utils.keywords(fiatCurrencyList);
 
 module.exports = FiatCurrencies;
