@@ -9,7 +9,7 @@ const accountSync = require('./account_sync');
 // deAsync allows us to convert an ES6 Async/Await function to a callback function
 // as required by express route handlers.
 // Borrowed from: https://strongloop.com/strongblog/async-error-handling-expressjs-es7-promises-generators/
-let deAsync = fn => (...args) => fn(...args).catch(args[2]);
+const deAsync = fn => (...args) => fn(...args).catch(args[2]);
 
 const app = express();
 
