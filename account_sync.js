@@ -77,12 +77,10 @@ const accountSync = {
     },
     async updateCurrencyPriceInAirtableAsync(currencyName, priceInDollars) {
         const currencyRecordId = await this.fetchAirtableRecordIdForCurrencyAsync(currencyName);
-        console.log("currencyRecordId", currencyRecordId);
         await airtableJsWrapper.updateAsync(config.airtableCurrenciesTable.name, config.airtableCurrenciesTable.priceFieldName, currencyRecordId, priceInDollars);
     },
     async updateHoldingAmountInAirtableAsync(assetName, amountInDollars) {
         const assetRecordId = await this.fetchAirtableRecordIdForHoldingAsync(assetName);
-        console.log("assetRecordId", assetRecordId);
         await airtableJsWrapper.updateAsync(config.airtableAssetsTable.name, config.airtableAssetsTable.amountFieldName, assetRecordId, amountInDollars);
     },
     async fetchAirtableRecordIdForCurrencyAsync(currency) {
