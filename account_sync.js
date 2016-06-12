@@ -15,7 +15,7 @@ const accountSync = {
             return; // short-circuit if no crypto asset updates wanted
         }
 
-        const cryptoAssetList = await coinMarketCap.fetchCryptoAssetsAsync();
+        const cryptoAssetList = await coinMarketCap.fetchAllCryptoAssetsAsync();
         for (const cryptoAsset of cryptoAssetList) {
             if (_.indexOf(config.cryptoAssetsToUpdate, cryptoAsset.id) !== -1) {
                 const priceInDollars = cryptoAsset.price_usd;

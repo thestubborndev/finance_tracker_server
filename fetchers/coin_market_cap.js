@@ -1,7 +1,7 @@
 const requester = require('../requester');
 
 const coinMarketCap = {
-    async fetchCryptoAssetsAsync() {
+    async fetchAllCryptoAssetsAsync() {
         return await requester.getRequestAsync('https://api.coinmarketcap.com/v1/ticker/');
     },
 };
