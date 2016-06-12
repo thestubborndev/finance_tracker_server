@@ -2,12 +2,12 @@ const _ = require('lodash');
 const promisify = require('es6-promisify');
 const plaid = require('plaid');
 const config = require('./config');
-const Airtable = require('./fetchers/airtable');
+const AirtableJsWrapper = require('./fetchers/airtablejs_wrapper');
 const coinMarketCap = require('./fetchers/coin_market_cap');
 const Currencies = require('./currencies/currencies');
 const openExchangeRates = require('./fetchers/open_exchange_rates');
 
-const airtable = new Airtable();
+const airtableJsWrapper = new AirtableJsWrapper();
 
 const accountSync = {
     async fetchAndUpdateCryptoAssetsAsync() {
@@ -26,7 +26,7 @@ const accountSync = {
                         it to the enum in order to resolve this error.
                     `);
                 }
-                await airtable.updateCurrencyPriceAsync(currencyName, priceInDollars);
+                await this.updateCurrencyPriceInAirtableAsync(currencyName, priceInDollars);
             }
         }
     },
@@ -42,7 +42,7 @@ const accountSync = {
             }
             if (_.indexOf(config.fiatCurrenciesToUpdate, currencyName) !== -1) {
                 const priceInDollars = 1 / fiatCurrencyExchangeRates[currencyName];
-                await airtable.updateCurrencyPriceAsync(currencyName, priceInDollars);
+                await this.updateCurrencyPriceInAirtableAsync(currencyName, priceInDollars);
             }
         }
     },
@@ -72,8 +72,24 @@ const accountSync = {
             _.each(response.accounts, account => {
                 currentBalance += account.balance.available;
             });
-            await airtable.updateHoldingAmountAsync(airtableHoldingName, currentBalance);
+            await this.updateHoldingAmountInAirtableAsync(airtableHoldingName, currentBalance);
         }
+    },
+    async updateCurrencyPriceInAirtableAsync(currencyName, priceInDollars) {
+        const currencyRecordId = await this.fetchAirtableRecordIdForCurrencyAsync(currencyName);
+        console.log("currencyRecordId", currencyRecordId);
+        await airtableJsWrapper.updateAsync(config.airtableCurrenciesTable.name, config.airtableCurrenciesTable.priceFieldName, currencyRecordId, priceInDollars);
+    },
+    async updateHoldingAmountInAirtableAsync(assetName, amountInDollars) {
+        const assetRecordId = await this.fetchAirtableRecordIdForHoldingAsync(assetName);
+        console.log("assetRecordId", assetRecordId);
+        await airtableJsWrapper.updateAsync(config.airtableAssetsTable.name, config.airtableAssetsTable.amountFieldName, assetRecordId, amountInDollars);
+    },
+    async fetchAirtableRecordIdForCurrencyAsync(currency) {
+        return promisify(airtableJsWrapper.fetchRecordIdForField.bind(airtableJsWrapper))(config.airtableCurrenciesTable.name, config.airtableCurrenciesTable.symbolFieldName, currency);
+    },
+    async fetchAirtableRecordIdForHoldingAsync(asset) {
+        return promisify(airtableJsWrapper.fetchRecordIdForField.bind(airtableJsWrapper))(config.airtableAssetsTable.name, config.airtableAssetsTable.fundsFieldName, asset);
     },
 };
 
