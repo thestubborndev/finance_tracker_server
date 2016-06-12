@@ -22,8 +22,8 @@ const accountSync = {
                 const currencyName = Currencies[cryptoAsset.id];
                 if (!currencyName) {
                     throw new Error(`
-                        ${cryptoAsset.id} is missing from the 'Currencies' enum. Add
-                        it to the enum in order to resolve this error.
+                        ${cryptoAsset.id} is missing from the 'Currencies' enum.
+                        Add it to the enum in order to resolve this error.
                     `);
                 }
                 await this.updateCurrencyPriceInAirtableAsync(currencyName, priceInDollars);
