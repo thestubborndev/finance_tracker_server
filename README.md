@@ -2,15 +2,17 @@
 
 Finance Tracker Server is a simple web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, you will be redirected to your updated Finance Tracker Airtable base.
 
-See the [related blog post here.](http://fabioberger.com/post/2016-06-05-finance-tracker-using-airtable/)
+See the <a href="http://fabioberger.com/post/2016-06-05-finance-tracker-using-airtable/" target="_blank">related blog post here.</a>
 
 ![Finance Tracker Base](https://cloud.githubusercontent.com/assets/2151492/15804151/341e3c32-2ab4-11e6-8c17-15b906048caa.png)
 
-See the [live example template here.](https://airtable.com/shrA09QDhlYHBPMB3)
+See the <a href="https://airtable.com/shr7hsDfj0vyFhO63" target="_blank">live example template here.</a>
+
 
 ## Setup
 
-In order to run this app locally, you will need to [install nodejs](https://nodejs.org/en/download/).
+In order to run this app locally, you will need to <a href="https://nodejs.org/en/download/" target="_blank">install nodejs</a>.
+
 
 After cloning this repository, run `npm install` from the projects directory to install its dependencies.
 
@@ -41,19 +43,24 @@ Whenever I mention setting an environment variable below, I'm referring to runni
 
 #### Airtable
 
-You will need to [sign up](https://airtable.com/) for an Airtable account. Once you have an account:
+You will need to <a href="https://airtable.com/" target="_blank">sign up</a>
+ for an Airtable account. Once you have an account:
 
-1. [Install the Finance Tracker template](https://airtable.com/shrA09QDhlYHBPMB3) by clicking the `Copy base` button.
+1. <a href="https://airtable.com/shr7hsDfj0vyFhO63" target="_blank">Install the Finance Tracker template</a>
+ by clicking the `Copy base` button.
 
-2. Visit your [user account page](https://airtable.com/account) in order to click the "Generate API key" link. Set this key to the `AIRTABLE_API_KEY` environment variable.
+2. Visit your <a href="https://airtable.com/account" target="_blank">user account page</a>
+ in order to click the "Generate API key" link. Set this key to the `AIRTABLE_API_KEY` environment variable.
 
-4. Next, go to the [Airtable API page](https://airtable.com/api), select the Finance Tracker base from the list to see it's custom documentation. set as an environment variable the appId corresponding to the `Finance Tracker` base from an example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`).
+4. Next, go to the <a href="https://airtable.com/api" target="_blank">Airtable API page</a>
+, select the Finance Tracker base from the list to see it's custom documentation. set as an environment variable the appId corresponding to the `Finance Tracker` base from an example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`).
 
 And that's it for Airtable!
 
 #### Open Exchange Rates (Optional)
 
-If you are interested in updating the USD value of assets denominated in fiat currencies, you can [sign up for an Open Exchange Rates account](https://openexchangerates.org/) and get a free API key. Set it with:
+If you are interested in updating the USD value of assets denominated in fiat currencies, you can <a href="https://openexchangerates.org/" target="_blank">sign up for an Open Exchange Rates account</a>
+ and get a free API key. Set it with:
 
 ``` bash
 export OPEN_EXCHANGE_API_KEY=[your-oex-api-key]
@@ -87,9 +94,11 @@ cryptoAssetsToUpdate: [
 
 #### Plaid Bank Integration (Optional)
 
-If you would like to update an entry in the 'Assets' table with your current bank balance, you can use [Plaid's Balance Product](https://plaid.com/products/balance/). They offer an intuitive API for connecting to many US banks with online banking credentials and once authenticated, you can request your current bank balance easily. At the time of writing, this was free for up to 100 connected accounts.
+If you would like to update an entry in the 'Assets' table with your current bank balance, you can use <a href="https://plaid.com/products/balance/" target="_blank">Plaid's Balance Product</a>
+. They offer an intuitive API for connecting to many US banks with online banking credentials and once authenticated, you can request your current bank balance easily. At the time of writing, this was free for up to 100 connected accounts.
 
-1. [Sign up for Plaid](https://dashboard.plaid.com/signup/) and set the Plaid `clientId` and `secret` as environment variables `PLAID_CLIENT_ID` and `PLAID_SECRET`.
+1. <a href="https://dashboard.plaid.com/signup/" target="_blank">Sign up for Plaid</a>
+ and set the Plaid `clientId` and `secret` as environment variables `PLAID_CLIENT_ID` and `PLAID_SECRET`.
 
 2. Next, we need to retrieve an `accessToken` associated with each of the bank account balances you'd like to keep track of. Each `accessToken` is linked to an online banking login credential. To make this as painless as possible, I wrote a small command-line tool that will help you get `accessTokens` in a matter of seconds. Run the following and follow the prompt instructions:
 
