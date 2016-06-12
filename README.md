@@ -1,3 +1,5 @@
+**Disclaimer**: This was built as a weekend project, use at your own discretion.
+
 Finance Tracker Server is a simple web server that updates crypto/fiat currency exchanges and bank balances in an Airtable Base used to keep track of your finances. By navigating to the servers endpoint with a browser, you will be redirected to your updated Finance Tracker Airtable base.
 
 See the [related blog post here.](http://fabioberger.com/post/2016-06-05-finance-tracker-using-airtable/)
@@ -10,7 +12,7 @@ See the [live example template here.](https://airtable.com/shrA09QDhlYHBPMB3)
 
 In order to run this app locally, you will need to [install nodejs](https://nodejs.org/en/download/).
 
-After cloning this repository, run `npm install` from the projects directory to install it's dependencies.
+After cloning this repository, run `npm install` from the projects directory to install its dependencies.
 
 The remaining setup steps will require you to edit a single file: `config.js`. Open it now in your favorite text editor and follow the remaining instructions.
 
