@@ -14,7 +14,7 @@ class Airtable {
             variable. Currently set to: ${config.airtableCredentials.apiKey}
             Valid value must starts with 'key' and have a total of 17 characters.
             e.g: key6D1UIKHur4OBY0
-            Set it by running 'export AIRTABLE_API_KEY=key6D1UIKHur4OBY0' in terminal.
+            Set it by running 'export AIRTABLE_API_KEY=[YOUR_API_KEY]' in terminal.
         `);
         assert(!_.isUndefined(config.airtableCredentials.appId) &&
             utils.airtableIdPrefix(config.airtableCredentials.appId) === 'app' &&
@@ -23,17 +23,17 @@ class Airtable {
             variable. Currently set to: ${config.airtableCredentials.appId}
             Valid value must starts with 'app' and have a total of 17 characters.
             e.g: app6D1UIKHur4OBY0
-            Set it by running 'export AIRTABLE_APP_ID=app6D1UIKHur4OBY0' in terminal.
+            Set it by running 'export AIRTABLE_APP_ID=[FINANCE_TRACKER_APP_ID]' in terminal.
         `);
         this._base = new AirtableLib({apiKey: config.airtableCredentials.apiKey}).base(config.airtableCredentials.appId);
     }
     async updateCurrencyPriceAsync(currencyName, priceInDollars) {
         const currencyRecordId = await this.fetchRecordIdForCurrencyAsync(currencyName);
-        await this.updateAsync('Currencies', 'Price', currencyRecordId, priceInDollars);
+        await this.updateAsync(config.airtableCurrenciesTable.name, config.airtableCurrenciesTable.priceFieldName, currencyRecordId, priceInDollars);
     }
     async updateHoldingAmountAsync(assetName, amountInDollars) {
         const assetRecordId = await this.fetchRecordIdForHoldingAsync(assetName);
-        await this.updateAsync('Assets', 'Amount', assetRecordId, amountInDollars);
+        await this.updateAsync(config.airtableAssetsTable.name, config.airtableAssetsTable.amountFieldName, assetRecordId, amountInDollars);
     }
     async updateAsync(tableName, recordId, fieldName, fieldValue) {
         return promisify(this.update.bind(this))(tableName, fieldName, recordId, fieldValue);
@@ -44,10 +44,10 @@ class Airtable {
         }, done);
     }
     async fetchRecordIdForCurrencyAsync(currency) {
-        return promisify(this.fetchRecordIdForField.bind(this))('Currencies', 'Symbol', currency);
+        return promisify(this.fetchRecordIdForField.bind(this))(config.airtableCurrenciesTable.name, config.airtableCurrenciesTable.symbolFieldName, currency);
     }
     async fetchRecordIdForHoldingAsync(asset) {
-        return promisify(this.fetchRecordIdForField.bind(this))('Assets', 'Funds', asset);
+        return promisify(this.fetchRecordIdForField.bind(this))(config.airtableAssetsTable.name, config.airtableAssetsTable.fundsFieldName, asset);
     }
     fetchRecordIdForField(tableName, fieldName, fieldValue, done) {
         this._base(tableName).select({

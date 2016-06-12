@@ -5,6 +5,17 @@ const config = {
         apiKey: process.env.AIRTABLE_API_KEY,
         appId: process.env.AIRTABLE_APP_ID,
     },
+    airtableCurrenciesTable: {
+        name: 'Currencies',
+        priceFieldName: 'Price',
+        symbolFieldName: 'Symbol',
+    },
+    airtableAssetsTable: {
+        name: 'Assets',
+        fundsFieldName: 'Funds',
+        amountFieldName: 'Amount',
+    },
+    airtableAssetsTableName: 'Assets',
     openExchangeCredentials: {
         apiKey: process.env.OPEN_EXCHANGE_API_KEY,
     },
