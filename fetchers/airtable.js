@@ -2,8 +2,8 @@ const _ = require('lodash');
 const assert = require('assert');
 const AirtableLib = require('airtable');
 const promisify = require('es6-promisify');
-const config = require('./config');
-const utils = require('./utils');
+const config = require('../config');
+const utils = require('../utils');
 
 class Airtable {
     constructor() {

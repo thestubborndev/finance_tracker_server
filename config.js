@@ -1,4 +1,4 @@
-const Currencies = require('./currencies');
+const Currencies = require('./currencies/currencies');
 
 const config = {
     airtableCredentials: {

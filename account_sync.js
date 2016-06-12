@@ -2,10 +2,10 @@ const _ = require('lodash');
 const promisify = require('es6-promisify');
 const plaid = require('plaid');
 const config = require('./config');
-const Airtable = require('./airtable');
-const coinMarketCap = require('./coin_market_cap');
-const Currencies = require('./currencies');
-const openExchangeRates = require('./open_exchange_rates');
+const Airtable = require('./fetchers/airtable');
+const coinMarketCap = require('./fetchers/coin_market_cap');
+const Currencies = require('./currencies/currencies');
+const openExchangeRates = require('./fetchers/open_exchange_rates');
 
 const airtable = new Airtable();
 

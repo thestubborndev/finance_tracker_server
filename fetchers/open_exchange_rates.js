@@ -1,5 +1,5 @@
-const requester = require('./requester');
-const config = require('./config');
+const requester = require('../requester');
+const config = require('../config');
 
 const LATEST_EXCHANGE_RATES_ENDPOINT = 'https://openexchangerates.org/api/latest.json';
 

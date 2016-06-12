@@ -1,4 +1,4 @@
-const requester = require('./requester');
+const requester = require('../requester');
 
 const coinMarketCap = {
     async fetchCryptoAssetsAsync() {
