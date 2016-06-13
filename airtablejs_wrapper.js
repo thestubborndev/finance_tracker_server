@@ -42,7 +42,7 @@ class AirtableJsWrapper {
             if (err) { done(err); return; }
             if (records.length === 0) {
                 throw new Error(`
-                    ${fieldValue}' was not found in the '${fieldName}' column of the
+                    ${fieldValue}' was not found in the '${fieldName}' field of the
                     ${tableName} Airtable table. Add it there in order to get this to
                     work.
                 `);
