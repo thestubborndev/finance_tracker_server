@@ -18,26 +18,7 @@ After cloning this repository, run `npm install` from the projects directory to 
 
 ### External accounts
 
-Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to set some API credentials as environment variables and edit some options in `config.js`. Open up this file in your favorite text editor and lets go through them step-by-step.
-
-##### Note on setting environment variables
-
-It is considered best practices to keep credentials (API keys, secrets, etc...) in environment variables rather then hard-coding them in your app. In order to set an environment variable on a linux/unix machine, you simply type the following into terminal:
-
-```
-export ENV_NAME=env_value
-```
-with `ENV_NAME` replaced with the name you want the variable to have and  `env_value` replaced with the actual value.
-
-Example:
-
-```
-export AIRTABLE_API_KEY=keyyWGAadfYRSf6Xk
-```
-
-If you want to persist environment variables between terminal sessions, you need to add this line to your terminals config file (e.g one of: `~/.bashrc`, `~/.bash_profile`, `~/.zsh`, etc...).
-
-Whenever I mention setting an environment variable below, I'm referring to running the above command in terminal or adding it to your terminal config file.
+Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to set some API credentials as environment variables and edit some options in `config.js`. Open up this file in your favorite text editor and lets go through them step-by-step. (For more help setting environment variables, see [ENVIRONMENT_VARIABLES.md](https://github.com/fabioberger/finance_tracker_server/blob/master/ENVIRONMENT_VARIABLES.md))
 
 #### Airtable
 
@@ -51,7 +32,7 @@ You will need to <a href="https://airtable.com/" target="_blank">sign up</a>
  in order to click the "Generate API key" link. Set this key to the `AIRTABLE_API_KEY` environment variable.
 
 4. Next, go to the <a href="https://airtable.com/api" target="_blank">Airtable API page</a>
-, select the Finance Tracker base from the list to see it's custom documentation. On this page, you need to find the base's `appId`. It is part of the example request URLs (and looks something like this: `appzMI3fKkMjUEOYC`). 
+, select the Finance Tracker base from the list to see it's custom documentation. On this page, you need to find the base's `appId`. It is part of the example request URLs (and looks something like this: `appzMI3fKkMjUEOYC`).
 
 ```
 export AIRTABLE_APP_ID=[your-finance-tracker-app-id]
