@@ -15,7 +15,6 @@ const config = {
         fundsFieldName: 'Funds',
         amountFieldName: 'Amount',
     },
-    airtableAssetsTableName: 'Assets',
     openExchangeCredentials: {
         apiKey: process.env.OPEN_EXCHANGE_API_KEY,
     },

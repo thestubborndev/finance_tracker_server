@@ -8,12 +8,6 @@ const openExchangeRates = {
         const response = await requester.getRequestAsync(`${LATEST_EXCHANGE_RATES_ENDPOINT}?app_id=${config.openExchangeCredentials.apiKey}`);
         return response.rates;
     },
-    async fetchCurrencyExchangeInDollarsAsync(currency) {
-        const response = await requester.getRequestAsync(`${LATEST_EXCHANGE_RATES_ENDPOINT}?app_id=${config.openExchangeCredentials.apiKey}`);
-        const lastTradePrice = parseFloat(response.rates[currency]);
-        const currencyValueInDollars = 1 / lastTradePrice;
-        return currencyValueInDollars;
-    },
 };
 
 module.exports = openExchangeRates;
