@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const plaid = require('plaid');
-var prompt = require('prompt');
+const prompt = require('prompt');
 const config = require('../config');
 const plaidClient = new plaid.Client(config.plaidCredentials.clientId, config.plaidCredentials.secret, plaid.environments.tartan);
 
