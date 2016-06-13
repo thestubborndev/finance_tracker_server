@@ -18,7 +18,7 @@ After cloning this repository, run `npm install` from the projects directory to 
 
 ### External accounts
 
-Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to set some API credentials as environment variables and edit some options in `config.js`. Open up this file in your favorite text editor and lets go through them step-by-step. [click here for more help setting environment variables.](https://github.com/fabioberger/finance_tracker_server/wiki/Environment-Variables)
+Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to set some API credentials as environment variables and edit some options in `config.js`. Open up this file in your favorite text editor and lets go through them step-by-step. [Click here for more help setting environment variables.](https://github.com/fabioberger/finance_tracker_server/wiki/Environment-Variables)
 
 #### Airtable
 
