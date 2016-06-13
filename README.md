@@ -16,11 +16,9 @@ In order to run this app locally, you will need to <a href="https://nodejs.org/e
 
 After cloning this repository, run `npm install` from the projects directory to install its dependencies.
 
-The remaining setup steps will require you to edit a single file: `config.js`. Open it now in your favorite text editor and follow the remaining instructions.
-
 ### External accounts
 
-Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to set some API credentials as environment variables and edit some options in `config.js`. Lets go through them step-by-step.
+Since this app integrates with multiple third-party services in order to update exchange rates, bank balances and your Airtable base, you will need to set some API credentials as environment variables and edit some options in `config.js`. Open up this file in your favorite text editor and lets go through them step-by-step.
 
 ##### Note on setting environment variables
 
@@ -53,7 +51,11 @@ You will need to <a href="https://airtable.com/" target="_blank">sign up</a>
  in order to click the "Generate API key" link. Set this key to the `AIRTABLE_API_KEY` environment variable.
 
 4. Next, go to the <a href="https://airtable.com/api" target="_blank">Airtable API page</a>
-, select the Finance Tracker base from the list to see it's custom documentation. set as an environment variable the appId corresponding to the `Finance Tracker` base from an example request URL (**hint**: it looks something like this: `appzMI3fKkMjUEOYC`).
+, select the Finance Tracker base from the list to see it's custom documentation. On this page, you need to find the base's `appId`. It is part of the example request URLs (and looks something like this: `appzMI3fKkMjUEOYC`). 
+
+```
+export AIRTABLE_APP_ID=[your-finance-tracker-app-id]
+```
 
 And that's it for Airtable!
 
@@ -90,7 +92,7 @@ cryptoAssetsToUpdate: [
     Currencies['the-dao'],
 ],
 ```
-- See `crypto_assets.js` for full list of supported crypto-assets.
+- See `crypto_assets.js` for a full list of supported crypto-assets.
 
 #### Plaid Bank Integration (Optional)
 
@@ -100,7 +102,7 @@ If you would like to update an entry in the 'Assets' table with your current ban
 1. <a href="https://dashboard.plaid.com/signup/" target="_blank">Sign up for Plaid</a>
  and set the Plaid `clientId` and `secret` as environment variables `PLAID_CLIENT_ID` and `PLAID_SECRET`.
 
-2. Next, we need to retrieve an `accessToken` associated with each of the bank account balances you'd like to keep track of. Each `accessToken` is linked to an online banking login credential. To make this as painless as possible, I wrote a small command-line tool that will help you get `accessTokens` in a matter of seconds. Run the following and follow the prompt instructions:
+2. Next, we need to retrieve an `accessToken` associated with each of the bank account balances you'd like to keep track of. Each `accessToken` is linked to an online banking login credential. To make this as painless as possible, I wrote a small command-line tool that will help you get `accessTokens` in a matter of seconds. Run the following command and follow the prompt instructions:
 
 ```
 node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx'; node transpiled/setup/plaid_access_token_fetcher.js
@@ -125,13 +127,9 @@ So if we just generated the `accessToken` for our Chase Bank account, we would s
 
 **Note:** If you don't want to activate balance updates, simply do not add a Plaid clientId or secret.
 
-```
-airtableAssetNameToAccessToken: {}, // Leave this empty
-```
-
 ## Run
 
-By now, you should have hooked up all the external accounts you want! All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to transpile the project before starting the server. To transpile the project, run the following from the project directory:
+By now, you should have configured the server to perform the updates you want. All thats left is to start the server and give it a go! Since this project uses ES6 syntax, we will need to transpile the project before starting the server. To transpile the project, run the following from the project directory:
 
 ```
 node ./node_modules/babel-cli/bin/babel . --out-dir ./transpiled --retain-lines --ignore '**node_modules,.git,transpiled' -x '.es6,.js,.es,.jsx';
@@ -150,5 +148,3 @@ Server Running... If running locally, visit: localhost:3000/appCeLwipDDNrFMm2
 ```
 
 Visiting the link in a browser should kick off the crypto/fiat currency and bank balance updates and then redirect you to your Airtable Finance Tracker base!
-
-**Pro Tip:** Hitting Cmd-click on the terminal link will open it in a browser window
